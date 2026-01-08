@@ -1,0 +1,53 @@
+nav {
+  background-color: @bgPrimary;
+  padding: 20px 0;
+  border-bottom: 1px solid @border;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: @textPrimary;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: "🎬";
+      font-size: 1.5rem;
+    }
+  }
+
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+
+    li {
+      a {
+        color: @textPrimary;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: @borderRadiusSmall;
+        transition: all 0.2s;
+        display: block;
+
+        &:hover {
+          background-color: @bgSecondary;
+        }
+
+        &.active {
+          color: @bgPrimary;
+          background-color: @textPrimary;
+        }
+      }
+    }
+  }
+}

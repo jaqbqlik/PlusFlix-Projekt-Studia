@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: @fontFamily;
+  font-size: @fontSize;
+  color: @textPrimary;
+  background-color: @bgSecondary;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+main {
+  min-height: calc(100vh - 180px);
+  padding: 32px 0 48px 0;
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: @textPrimary;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  color: @textPrimary;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: @textPrimary;
+}
+
+a {
+  color: @textPrimary;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: @textSecondary;
+  }
+}

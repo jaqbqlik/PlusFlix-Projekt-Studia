@@ -1,0 +1,1 @@
+Miniprojekt zaliczeniowy grupy JAK

@@ -1,0 +1,39 @@
+.search-section {
+  background-color: @bgSecondary;
+  padding: 32px 0;
+  margin: -32px 0 32px 0;
+
+  .search-bar {
+    position: relative;
+    max-width: 800px;
+
+    input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      font-size: @fontSize;
+      border: 1px solid @border;
+      border-radius: @borderRadius;
+      background-color: @bgPrimary;
+      color: @textPrimary;
+      font-family: @fontFamily;
+
+      &:focus {
+        outline: none;
+        border-color: @textPrimary;
+      }
+
+      &::placeholder {
+        color: @textMuted;
+      }
+    }
+
+    &::before {
+      content: "🔍";
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+    }
+  }
+}

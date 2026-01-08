@@ -1,0 +1,35 @@
+footer {
+  font-size: @fontSizeSmall;
+  color: @textMuted;
+  padding: 32px 0;
+  border-top: 1px solid @border;
+  background-color: @bgPrimary;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: @mobileBreakpoint) {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    a {
+      color: @textSecondary;
+
+      &:hover {
+        color: @textPrimary;
+      }
+    }
+  }
+}
