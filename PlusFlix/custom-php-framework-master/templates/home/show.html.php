@@ -1,43 +1,94 @@
 <?php
 
+///** @var \App\Model\Post $post */
 /** @var \App\Service\Router $router */
 
+
+$bodyClass = 'show';
 $title = 'PlusFlix';
-?>
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stranger Things - <?= htmlspecialchars($title) ?></title>
-    <link rel="stylesheet" href="/assets/dist/style.min.css">
-</head>
-<body>
-<nav>
-    <div class="container">
-        <a href="<?= $router->generatePath('home-index') ?>" class="logo">
-            <?= htmlspecialchars($title) ?>
-        </a>
-        <ul class="nav-menu">
-            <li><a href="<?= $router->generatePath('home-index') ?>">Home</a></li>
-            <li><a href="#">Favorites</a></li>
-        </ul>
-    </div>
-</nav>
 
-<main>
+ob_start(); ?>
+    <main>
+        <div class="container">
+            <div class="detail-page">
+                <a href="<?= $router->generatePath('home-index') ?>" class="back-link">
+                    Back to Home
+                </a>
 
-</main>
+                <div class="detail-container">
+                    <div>
+                        <img src="https://via.placeholder.com/300x450/1a1a2e/e94560?text=Stranger+Things"
+                             alt="Stranger Things"
+                             class="detail-poster">
+                    </div>
 
-<footer>
-    <div class="container">
-        <p>&copy; 2025 <?= htmlspecialchars($title) ?>. Find where to watch your favorite content.</p>
-        <ul class="footer-links">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Privacy</a></li>
-        </ul>
-    </div>
-</footer>
-</body>
-</html>
+                    <div class="detail-content">
+                        <div class="detail-header">
+                            <h1>Stranger Things</h1>
+                            <button class="favorite-btn active">♥</button>
+                        </div>
+
+                        <div class="detail-meta">
+                            <span>Series</span>
+                            <span>2016</span>
+                            <span>8.7/10</span>
+                        </div>
+
+                        <div class="platforms-section">
+                            <h3>Available on</h3>
+                            <div class="platform-badges">
+                                <div class="platform-badge netflix">
+                                    <span>N</span>
+                                    Netflix
+                                </div>
+                                <div class="platform-badge prime inactive">
+                                    <span>P</span>
+                                    Prime Video
+                                </div>
+                                <div class="platform-badge disney inactive">
+                                    <span>D</span>
+                                    Disney+
+                                </div>
+                                <div class="platform-badge hbo inactive">
+                                    <span>H</span>
+                                    HBO Max
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-section">
+                            <h3>Overview</h3>
+                            <p>When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.</p>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <h4>Cast</h4>
+                                <p>Millie Bobby Brown, Finn Wolfhard, Winona Ryder</p>
+                            </div>
+                            <div class="info-item">
+                                <h4>Genres</h4>
+                                <p>Drama, Fantasy, Horror</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.querySelector('.favorite-btn').addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                this.classList.remove('active');
+                this.textContent = '♡';
+            } else {
+                this.classList.add('active');
+                this.textContent = '♥';
+            }
+        });
+    </script>
+<?php $main = ob_get_clean();
+
+
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
