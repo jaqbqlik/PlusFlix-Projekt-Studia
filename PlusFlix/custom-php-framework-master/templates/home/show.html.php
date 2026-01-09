@@ -15,7 +15,7 @@ ob_start(); ?>
 
                 <div class="detail-container">
                     <div>
-                        <img src="https://via.placeholder.com/300x450/1a1a2e/e94560?text=Stranger+Things"
+                        <img src="/images/dziwnerzeczy.png"
                              alt="Stranger Things"
                              class="detail-poster">
                     </div>

@@ -22,7 +22,7 @@ ob_start(); ?>
                 <!-- Stranger Things -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn active" type="button">♥</button>
-                    <img src="#"
+                    <img src="/images/dziwnerzeczy.png"
                          alt="Stranger Things"
                          class="poster">
                     <div class="card-content">
@@ -42,7 +42,7 @@ ob_start(); ?>
                 <!-- The Last of Us -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn active" type="button">♥</button>
-                    <img src="#"
+                    <img src="/images/ostatnieznas.jpg"
                          alt="The Last of Us"
                          class="poster">
                     <div class="card-content">
@@ -62,7 +62,7 @@ ob_start(); ?>
                 <!-- Dune -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn" type="button">♡</button>
-                    <img src="#"
+                    <img src="/images/diunka.png"
                          alt="Dune"
                          class="poster">
                     <div class="card-content">
@@ -82,7 +82,7 @@ ob_start(); ?>
                 <!-- The Mandalorian -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn" type="button">♡</button>
-                    <img src="#"
+                    <img src="/images/mandek.png"
                          alt="The Mandalorian"
                          class="poster">
                     <div class="card-content">
@@ -102,7 +102,7 @@ ob_start(); ?>
                 <!-- Oppenheimer -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn" type="button">♡</button>
-                    <img src="#"
+                    <img src="/images/posters/oppenheimer-poster.png"
                          alt="Oppenheimer"
                          class="poster">
                     <div class="card-content">
@@ -122,7 +122,7 @@ ob_start(); ?>
                 <!-- Wednesday -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
                     <button class="favorite-btn" type="button">♡</button>
-                    <img src="#"
+                    <img src="/images/czwartek.jpg"
                          alt="Wednesday"
                          class="poster">
                     <div class="card-content">
