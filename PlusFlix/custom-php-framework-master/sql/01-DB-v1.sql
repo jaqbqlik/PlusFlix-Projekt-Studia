@@ -8,7 +8,7 @@ title TEXT NOT NULL,
         description TEXT,
         release_year INTEGER,
         genre TEXT,
-        poster_url TEXT,
+        poster_path TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
