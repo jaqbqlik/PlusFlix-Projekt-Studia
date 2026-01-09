@@ -25,4 +25,6 @@ lessc public\assets\src\less\style.less public\assets\dist\style.min.css --clean
 ```
 
 ##URUCHOMIENIE STRONY
+```
 php -S localhost:56646 -t .\public 
+```
