@@ -2,7 +2,7 @@
 
 /** @var \App\Service\Router $router */
 
-$title = 'Stranger Things - PlusFlix';
+$title = 'PlusFlix';
 $bodyClass = 'show';
 
 ob_start(); ?>
@@ -61,11 +61,11 @@ ob_start(); ?>
 
                         <div class="info-grid">
                             <div class="info-item">
-                                <h4>Cast</h4>
+                                <h3>Cast</h3>
                                 <p>Millie Bobby Brown, Finn Wolfhard, Winona Ryder</p>
                             </div>
                             <div class="info-item">
-                                <h4>Genres</h4>
+                                <h3>Genres</h3>
                                 <p>Drama, Fantasy, Horror</p>
                             </div>
                         </div>
