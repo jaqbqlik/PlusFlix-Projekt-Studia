@@ -247,7 +247,7 @@ try {
     echo "✓ Test zakończony pomyślnie!\n";
     echo "================================\n\n";
     echo "Możesz teraz uruchomić aplikację:\n";
-    echo "cd public && php -S localhost:8000\n\n";
+    echo "php -S localhost:56646 -t .\public \n\n";
 
 } catch (PDOException $e) {
     echo "BŁĄD BAZY DANYCH: " . $e->getMessage() . "\n";
