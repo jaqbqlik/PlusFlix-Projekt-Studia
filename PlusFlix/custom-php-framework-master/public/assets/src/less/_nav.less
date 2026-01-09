@@ -1,9 +1,13 @@
 nav {
+  height: 120px;
   background-color: @bgPrimary;
-  padding: 20px 0;
+  margin: 0 0 0 0;
+  padding: 25px 0 0px 0;
   border-bottom: 1px solid @border;
 
   .container {
+    max-width: 1400px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,6 +48,10 @@ nav {
         &.active {
           color: @bgPrimary;
           background-color: @textPrimary;
+
+          @media (max-width: 460px) {
+            display: none;
+          }
         }
       }
     }
