@@ -18,8 +18,7 @@ git push origin main
 ```
 
 ## KOMPILOWANIE (mozna to tak nazwać?) STYLI LESS W 
-
-## katalogu Projekt\PlusFlix\custom-php-framework-master
+katalogu Projekt\PlusFlix\custom-php-framework-master
 ```
 lessc public\assets\src\less\style.less public\assets\dist\style.min.css --clean-css --source-map
 ```
