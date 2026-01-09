@@ -1,9 +1,8 @@
 <?php
 
-/** @var \App\Model\Home[] $homes */
 /** @var \App\Service\Router $router */
 
-$title = 'Post List';
+$title = 'PlusFlix';
 $bodyClass = 'index';
 
 ob_start(); ?>
@@ -22,8 +21,8 @@ ob_start(); ?>
             <div class="production-grid">
                 <!-- Stranger Things -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn active">♥</button>
-                    <img src="https://via.placeholder.com/300x450/1a1a2e/e94560?text=Stranger+Things"
+                    <button class="favorite-btn active" type="button">♥</button>
+                    <img src="#"
                          alt="Stranger Things"
                          class="poster">
                     <div class="card-content">
@@ -42,8 +41,8 @@ ob_start(); ?>
 
                 <!-- The Last of Us -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn active">♥</button>
-                    <img src="https://via.placeholder.com/300x450/16213e/0f3460?text=The+Last+of+Us"
+                    <button class="favorite-btn active" type="button">♥</button>
+                    <img src="#"
                          alt="The Last of Us"
                          class="poster">
                     <div class="card-content">
@@ -62,8 +61,8 @@ ob_start(); ?>
 
                 <!-- Dune -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn">♡</button>
-                    <img src="https://via.placeholder.com/300x450/533483/9b59b6?text=Dune"
+                    <button class="favorite-btn" type="button">♡</button>
+                    <img src="#"
                          alt="Dune"
                          class="poster">
                     <div class="card-content">
@@ -82,8 +81,8 @@ ob_start(); ?>
 
                 <!-- The Mandalorian -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn">♡</button>
-                    <img src="https://via.placeholder.com/300x450/0f4c75/3282b8?text=Mandalorian"
+                    <button class="favorite-btn" type="button">♡</button>
+                    <img src="#"
                          alt="The Mandalorian"
                          class="poster">
                     <div class="card-content">
@@ -102,8 +101,8 @@ ob_start(); ?>
 
                 <!-- Oppenheimer -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn">♡</button>
-                    <img src="https://via.placeholder.com/300x450/2d4059/ea5455?text=Oppenheimer"
+                    <button class="favorite-btn" type="button">♡</button>
+                    <img src="#"
                          alt="Oppenheimer"
                          class="poster">
                     <div class="card-content">
@@ -122,8 +121,8 @@ ob_start(); ?>
 
                 <!-- Wednesday -->
                 <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn">♡</button>
-                    <img src="https://via.placeholder.com/300x450/1a1a2e/16a085?text=Wednesday"
+                    <button class="favorite-btn" type="button">♡</button>
+                    <img src="#"
                          alt="Wednesday"
                          class="poster">
                     <div class="card-content">

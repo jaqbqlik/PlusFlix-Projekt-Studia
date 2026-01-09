@@ -1,11 +1,9 @@
 <?php
 
-///** @var \App\Model\Post $post */
 /** @var \App\Service\Router $router */
 
-
+$title = 'Stranger Things - PlusFlix';
 $bodyClass = 'show';
-$title = 'PlusFlix';
 
 ob_start(); ?>
     <main>
@@ -25,7 +23,7 @@ ob_start(); ?>
                     <div class="detail-content">
                         <div class="detail-header">
                             <h1>Stranger Things</h1>
-                            <button class="favorite-btn active">♥</button>
+                            <button class="favorite-btn-detail active" type="button">♥</button>
                         </div>
 
                         <div class="detail-meta">
@@ -76,19 +74,19 @@ ob_start(); ?>
             </div>
         </div>
     </main>
+
     <script>
-        document.querySelector('.favorite-btn').addEventListener('click', function() {
+        document.querySelector('.favorite-btn-detail').addEventListener('click', function() {
             if (this.classList.contains('active')) {
                 this.classList.remove('active');
-                this.textContent = '♡';
+                this.innerHTML = '♡';
             } else {
                 this.classList.add('active');
-                this.textContent = '♥';
+                this.innerHTML = '♥';
             }
         });
     </script>
+
 <?php $main = ob_get_clean();
-
-
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
