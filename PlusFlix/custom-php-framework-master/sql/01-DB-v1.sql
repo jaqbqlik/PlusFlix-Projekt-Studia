@@ -80,11 +80,11 @@ CREATE TABLE list_production (
 
 -- Tabela: Administratorzy
 -- KM3: Panel administratora - login
-CREATE TABLE admin (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL UNIQUE,
-        password_hash TEXT NOT NULL
-);
+--CREATE TABLE admin (
+--        id INTEGER PRIMARY KEY AUTOINCREMENT,
+--        username TEXT NOT NULL UNIQUE,
+--       password_hash TEXT NOT NULL
+--);
 
 
 -- Indeksy
