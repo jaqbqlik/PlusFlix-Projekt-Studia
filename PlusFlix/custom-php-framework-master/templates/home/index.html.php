@@ -1,5 +1,7 @@
 <?php
 
+/** @var \App\Model\Production[] $productions */
+/** @var array $availablePlatformsMap */
 /** @var \App\Service\Router $router */
 
 $title = 'PlusFlix';
@@ -19,122 +21,60 @@ ob_start(); ?>
             <h2 class="section-title">Popular Movies & Series</h2>
 
             <div class="production-grid">
-                <!-- Stranger Things -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn active" type="button">♥</button>
-                    <img src="/images/dziwnerzeczy.png"
-                         alt="Stranger Things"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">Stranger Things</h3>
-                        <div class="card-meta">
-                            <span>Series</span>
-                        </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                            <div class="platform-icon prime">P</div>
-                            <div class="platform-icon disney">D</div>
-                            <div class="platform-icon apple">A</div>
-                        </div>
-                    </div>
-                </a>
+                <?php foreach ($productions as $production): ?>
+                    <?php
+                    $id = (int)$production->getId();
+                    $titleText = $production->getTitle() ?? '';
 
-                <!-- The Last of Us -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn active" type="button">♥</button>
-                    <img src="/images/ostatnieznas.jpg"
-                         alt="The Last of Us"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">The Last of Us</h3>
-                        <div class="card-meta">
-                            <span>Series</span>
-                        </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                            <div class="platform-icon prime">P</div>
-                            <div class="platform-icon disney">D</div>
-                            <div class="platform-icon hbo">H</div>
-                        </div>
-                    </div>
-                </a>
+                    $typeDb = strtolower((string)($production->getType() ?? ''));
+                    $typeLabel = ($typeDb === 'movie' || $typeDb === 'film') ? 'Movie' : 'Series';
 
-                <!-- Dune -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn" type="button">♡</button>
-                    <img src="/images/diunka.png"
-                         alt="Dune"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">Dune</h3>
-                        <div class="card-meta">
-                            <span>Movie</span>
-                        </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                            <div class="platform-icon prime">P</div>
-                            <div class="platform-icon disney">D</div>
-                            <div class="platform-icon hbo">H</div>
-                        </div>
-                    </div>
-                </a>
+                    $poster = $production->getPosterPath();
+                    $poster = $poster ? trim($poster) : '';
+                    $posterSrc = $poster !== '' ? $poster : '/images/ostatnieznas.jpg';
 
-                <!-- The Mandalorian -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn" type="button">♡</button>
-                    <img src="/images/mandek.png"
-                         alt="The Mandalorian"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">The Mandalorian</h3>
-                        <div class="card-meta">
-                            <span>Series</span>
-                        </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                            <div class="platform-icon prime">P</div>
-                            <div class="platform-icon disney">D</div>
-                            <div class="platform-icon apple">A</div>
-                        </div>
-                    </div>
-                </a>
+                    // Dostępne platformy dla tej produkcji
+                    $availableNames = $availablePlatformsMap[$id] ?? [];
 
-                <!-- Oppenheimer -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn" type="button">♡</button>
-                    <img src="/images/posters/oppenheimer-poster.png"
-                         alt="Oppenheimer"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">Oppenheimer</h3>
-                        <div class="card-meta">
-                            <span>Movie</span>
-                        </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                            <div class="platform-icon prime">P</div>
-                            <div class="platform-icon disney">D</div>
-                            <div class="platform-icon apple">A</div>
-                        </div>
-                    </div>
-                </a>
+                    // mapowanie nazwy z DB -> klasa css + literka
+                    $platformUi = [
+                            'Netflix' => ['class' => 'netflix', 'letter' => 'N'],
+                            'Prime Video' => ['class' => 'prime', 'letter' => 'P'],
+                            'Disney+' => ['class' => 'disney', 'letter' => 'D'],
+                            'HBO Max' => ['class' => 'hbo', 'letter' => 'H'],
+                            'Apple TV+' => ['class' => 'apple', 'letter' => 'A'],
+                    ];
+                    ?>
 
-                <!-- Wednesday -->
-                <a href="<?= $router->generatePath('home-show') ?>" class="production-card">
-                    <button class="favorite-btn" type="button">♡</button>
-                    <img src="/images/czwartek.jpg"
-                         alt="Wednesday"
-                         class="poster">
-                    <div class="card-content">
-                        <h3 class="card-title">Wednesday</h3>
-                        <div class="card-meta">
-                            <span>Series</span>
+                    <a href="<?= $router->generatePath('home-show', ['id' => $id]) ?>" class="production-card">
+                        <button class="favorite-btn" type="button">♡</button>
+
+                        <img src="<?= htmlspecialchars($posterSrc) ?>"
+                             alt="<?= htmlspecialchars($titleText) ?>"
+                             class="poster">
+
+                        <div class="card-content">
+                            <h3 class="card-title"><?= htmlspecialchars($titleText) ?></h3>
+                            <div class="card-meta">
+                                <span><?= htmlspecialchars($typeLabel) ?></span>
+                            </div>
+
+                            <div class="platforms">
+                                <?php foreach ($availableNames as $pName): ?>
+                                    <?php
+                                    $ui = $platformUi[$pName] ?? [
+                                            'class' => 'netflix',
+                                            'letter' => strtoupper(substr($pName, 0, 1)),
+                                    ];
+                                    ?>
+                                    <div class="platform-icon <?= htmlspecialchars($ui['class']) ?>">
+                                        <?= htmlspecialchars($ui['letter']) ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                        <div class="platforms">
-                            <div class="platform-icon netflix">N</div>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </main>

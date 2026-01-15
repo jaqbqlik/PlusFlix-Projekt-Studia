@@ -1,32 +1,47 @@
 <?php
-
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-use App\Controller\HomeController;
-use App\Service\Config;
-use App\Service\Templating;
-use App\Service\Router;
+$config = new \App\Service\Config();
 
-$config = new Config();
-$templating = new Templating();
-$router = new Router();
+$templating = new \App\Service\Templating();
+$router = new \App\Service\Router();
 
-$action = $_REQUEST['action'] ?? 'home-index';
+$action = $_REQUEST['action'] ?? null;
 
 switch ($action) {
+
     case 'home-index':
     case null:
-        $controller = new HomeController();
+        $controller = new \App\Controller\HomeController();
         $view = $controller->indexAction($templating, $router);
         break;
 
     case 'home-show':
-        $controller = new HomeController();
-        $view = $controller->showAction($templating, $router);
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->showAction((int)$_REQUEST['id'], $templating, $router);
+        break;
+
+    case 'home-create':
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->createAction($_REQUEST['production'] ?? null, $templating, $router);
+        break;
+
+    case 'home-delete':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->deleteAction((int)$_REQUEST['id'], $router);
         break;
 
     default:
         $view = 'Not found';
+        break;
 }
 
-echo $view;
+if ($view) {
+    echo $view;
+}

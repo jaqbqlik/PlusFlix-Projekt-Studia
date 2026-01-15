@@ -20,6 +20,7 @@ try {
         $pdo->exec("DELETE FROM production_availability");
         $pdo->exec("DELETE FROM platform");
         $pdo->exec("DELETE FROM production");
+
         echo "   ✓ Dane wyczyszczone\n\n";
     }
 
@@ -238,10 +239,10 @@ try {
     }
 
     clearDatabase($pdo);
-    insertPlatforms($pdo);
-    insertProductions($pdo);
-    assignPlatforms($pdo);
-    displayData($pdo);
+    //insertPlatforms($pdo);
+    //insertProductions($pdo);
+    //assignPlatforms($pdo);
+    //displayData($pdo);
 
     echo "================================\n";
     echo "✓ Test zakończony pomyślnie!\n";

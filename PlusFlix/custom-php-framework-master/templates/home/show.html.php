@@ -1,5 +1,7 @@
 <?php
 
+/** @var \App\Model\Production $production */
+/** @var array $platforms */
 /** @var \App\Service\Router $router */
 
 $title = 'PlusFlix';
@@ -15,58 +17,79 @@ ob_start(); ?>
 
                 <div class="detail-container">
                     <div>
-                        <img src="/images/dziwnerzeczy.png"
-                             alt="Stranger Things"
+                        <?php
+                        $titleText = $production->getTitle() ?? '';
+                        $typeDb = strtolower((string)($production->getType() ?? ''));
+                        $typeLabel = ($typeDb === 'movie' || $typeDb === 'film') ? 'Movie' : 'Series';
+
+                        $poster = $production->getPosterPath();
+                        $poster = $poster ? trim($poster) : '';
+                        $posterSrc = $poster !== '' ? $poster : '/images/ostatnieznas.jpg';
+
+                        $platformUi = [
+                                'Netflix' => ['class' => 'netflix', 'letter' => 'N', 'label' => 'Netflix'],
+                                'Prime Video' => ['class' => 'prime', 'letter' => 'P', 'label' => 'Prime Video'],
+                                'Disney+' => ['class' => 'disney', 'letter' => 'D', 'label' => 'Disney+'],
+                                'HBO Max' => ['class' => 'hbo', 'letter' => 'H', 'label' => 'HBO Max'],
+                                'Apple TV+' => ['class' => 'apple', 'letter' => 'A', 'label' => 'Apple TV+'],
+                        ];
+                        ?>
+
+                        <img src="<?= htmlspecialchars($posterSrc) ?>"
+                             alt="<?= htmlspecialchars($titleText) ?>"
                              class="detail-poster">
                     </div>
 
                     <div class="detail-content">
                         <div class="detail-header">
-                            <h1>Stranger Things</h1>
+                            <h1><?= htmlspecialchars($titleText) ?></h1>
                             <button class="favorite-btn-detail active" type="button">♥</button>
                         </div>
 
                         <div class="detail-meta">
-                            <span>Series</span>
-                            <span>2016</span>
-                            <span>8.7/10</span>
+                            <span><?= htmlspecialchars($typeLabel) ?></span>
+                            <span><?= htmlspecialchars((string)($production->getReleaseYear() ?? '')) ?></span>
+                            <span>-</span>
                         </div>
 
                         <div class="platforms-section">
                             <h3>Available on</h3>
                             <div class="platform-badges">
-                                <div class="platform-badge netflix">
-                                    <span>N</span>
-                                    Netflix
-                                </div>
-                                <div class="platform-badge prime inactive">
-                                    <span>P</span>
-                                    Prime Video
-                                </div>
-                                <div class="platform-badge disney inactive">
-                                    <span>D</span>
-                                    Disney+
-                                </div>
-                                <div class="platform-badge hbo inactive">
-                                    <span>H</span>
-                                    HBO Max
-                                </div>
+                                <?php foreach ($platforms as $p): ?>
+                                    <?php
+                                    $name = $p['name'] ?? '';
+                                    $isAvailable = (int)($p['is_available'] ?? 0) === 1;
+
+                                    $ui = $platformUi[$name] ?? [
+                                            'class' => 'netflix',
+                                            'letter' => strtoupper(substr($name, 0, 1)),
+                                            'label' => $name,
+                                    ];
+
+                                    $inactiveClass = $isAvailable ? '' : ' inactive';
+                                    ?>
+
+                                    <div class="platform-badge <?= htmlspecialchars($ui['class']) ?><?= $inactiveClass ?>">
+                                        <span><?= htmlspecialchars($ui['letter']) ?></span>
+                                        <?= htmlspecialchars($ui['label']) ?>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
 
                         <div class="overview-section">
                             <h3>Overview</h3>
-                            <p>When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.</p>
+                            <p><?= nl2br(htmlspecialchars($production->getDescription() ?? '')) ?></p>
                         </div>
 
                         <div class="info-grid">
                             <div class="info-item">
                                 <h3>Cast</h3>
-                                <p>Millie Bobby Brown, Finn Wolfhard, Winona Ryder</p>
+                                <p>-</p>
                             </div>
                             <div class="info-item">
                                 <h3>Genres</h3>
-                                <p>Drama, Fantasy, Horror</p>
+                                <p><?= htmlspecialchars($production->getGenre() ?? '') ?></p>
                             </div>
                         </div>
                     </div>
