@@ -1,31 +1,25 @@
-// ============================================
-// _buttons.less - Buttons & Interactive Elements
-// ============================================
-
-// Favorite button (heart)
-.favorite-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.95);
-  border: none;
+.favorite-btn-detail {
+  width: 48px;
+  height: 48px;
+  border-radius: @borderRadiusSmall;
+  background-color: @bgPrimary;
+  border: 1px solid @border;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  z-index: 10;
+  font-size: 24px;
   transition: all 0.2s;
+  flex-shrink: 0;
   outline: none !important;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  margin-left: 12px; // DODAJ TEN MARGIN
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    background-color: @bgSecondary;
   }
 
   &:focus {
@@ -42,7 +36,43 @@
   }
 }
 
-// Platform icons (small badges under cards)
+.edit-btn-detail {
+  width: 64px;
+  height: 48px;
+  border-radius: @borderRadiusSmall;
+  background-color: @bgPrimary;
+  border: 1px solid @border;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  outline: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-left: 12px; // DODAJ TEN MARGIN
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: @bgSecondary;
+  }
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &:active {
+    outline: none !important;
+  }
+
+  &.active {
+    color: @primaryRed;
+  }
+}
 .platform-icon {
   width: 32px;
   height: 32px;
@@ -81,7 +111,7 @@
   }
 }
 
-// Platform badges (large on detail page)
+
 .platform-badge {
   padding: 10px 20px;
   border-radius: @borderRadiusSmall;
@@ -118,14 +148,27 @@
     color: white;
   }
 
+  &.apple {
+    background-color: @appletvBlue;
+    color: white;
+    border-color: @appletvBlue;
+  }
+
   &.inactive {
     background-color: transparent;
     color: @textMuted;
     border-color: @border;
+
+    &.apple {
+      background-color: transparent;
+      color: @textMuted;
+      border-color: @border;
+    }
   }
 }
 
-// Generic button styles
+
+
 button, .btn {
   background-color: @bgPrimary;
   color: @textPrimary;
@@ -163,7 +206,6 @@ button, .btn {
   }
 }
 
-/* button do show.html */
 .favorite-btn-detail {
   width: 48px;
   height: 48px;
@@ -174,7 +216,7 @@ button, .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 24px;
   transition: all 0.2s;
   flex-shrink: 0;
   outline: none !important;
@@ -199,4 +241,7 @@ button, .btn {
   &.active {
     color: @primaryRed;
   }
+}
+.btn-primary {
+  color: @textPrimary;
 }

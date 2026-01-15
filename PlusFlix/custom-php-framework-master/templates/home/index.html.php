@@ -31,7 +31,7 @@ ob_start(); ?>
 
                     $poster = $production->getPosterPath();
                     $poster = $poster ? trim($poster) : '';
-                    $posterSrc = $poster !== '' ? $poster : '/images/ostatnieznas.jpg';
+                    $posterSrc = $poster !== '' ? $poster : '/images/placeholder-user.jpg';
 
                     // Dostępne platformy dla tej produkcji
                     $availableNames = $availablePlatformsMap[$id] ?? [];

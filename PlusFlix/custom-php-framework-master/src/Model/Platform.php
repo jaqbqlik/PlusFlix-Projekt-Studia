@@ -4,14 +4,10 @@ namespace App\Model;
 
 use App\Service\Config;
 
-class Production
+class Platform
 {
     private ?int $id = null;
-    private ?string $title = null;
-    private ?string $type = null;
-    private ?string $description = null;
-    private ?int $releaseYear = null;
-    private ?string $genre = null;
+    private ?string $name = null;
     private ?string $posterPath = null;
 
     public function getId(): ?int
@@ -19,64 +15,20 @@ class Production
         return $this->id;
     }
 
-    public function setId(?int $id): Production
+    public function setId(?int $id): Platform
     {
         $this->id = $id;
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(?string $title): Production
+    public function setName(?string $name): Platform
     {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): Production
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): Production
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    public function getReleaseYear(): ?int
-    {
-        return $this->releaseYear;
-    }
-
-    public function setReleaseYear(?int $releaseYear): Production
-    {
-        $this->releaseYear = $releaseYear;
-        return $this;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?string $genre): Production
-    {
-        $this->genre = $genre;
+        $this->name = $name;
         return $this;
     }
 
@@ -85,38 +37,26 @@ class Production
         return $this->posterPath;
     }
 
-    public function setPosterPath(?string $posterPath): Production
+    public function setPosterPath(?string $posterPath): Platform
     {
         $this->posterPath = $posterPath;
         return $this;
     }
 
-    public static function fromArray($array): Production
+    public static function fromArray($array): Platform
     {
-        $production = new self();
-        $production->fill($array);
-        return $production;
+        $platform = new self();
+        $platform->fill($array);
+        return $platform;
     }
 
-    public function fill($array): Production
+    public function fill($array): Platform
     {
-        if (isset($array['id']) && ! $this->getId()) {
+        if (isset($array['id']) && !$this->getId()) {
             $this->setId($array['id']);
         }
-        if (isset($array['title'])) {
-            $this->setTitle($array['title']);
-        }
-        if (isset($array['type'])) {
-            $this->setType($array['type']);
-        }
-        if (isset($array['description'])) {
-            $this->setDescription($array['description']);
-        }
-        if (isset($array['release_year'])) {
-            $this->setReleaseYear($array['release_year']);
-        }
-        if (isset($array['genre'])) {
-            $this->setGenre($array['genre']);
+        if (isset($array['name'])) {
+            $this->setName($array['name']);
         }
         if (isset($array['poster_path'])) {
             $this->setPosterPath($array['poster_path']);
@@ -127,13 +67,9 @@ class Production
 
     public static function findAll(): array
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
-        $sql = 'SELECT * FROM production';
+        $sql = 'SELECT * FROM platform ORDER BY name';
         $statement = $pdo->prepare($sql);
         $statement->execute();
 
@@ -146,20 +82,16 @@ class Production
         return $items;
     }
 
-    public static function find($id): ?Production
+    public static function find($id): ?Platform
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
-        $sql = 'SELECT * FROM production WHERE id = :id';
+        $sql = 'SELECT * FROM platform WHERE id = :id';
         $statement = $pdo->prepare($sql);
         $statement->execute(['id' => $id]);
 
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
-        if (! $row) {
+        if (!$row) {
             return null;
         }
 
@@ -168,42 +100,22 @@ class Production
 
     public function save(): void
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
-        if (! $this->getId()) {
-            $sql = 'INSERT INTO production (title, type, description, release_year, genre, poster_path)
-                    VALUES (:title, :type, :description, :release_year, :genre, :poster_path)';
+        if (!$this->getId()) {
+            $sql = 'INSERT INTO platform (name, poster_path) VALUES (:name, :poster_path)';
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                'title' => $this->getTitle(),
-                'type' => $this->getType(),
-                'description' => $this->getDescription(),
-                'release_year' => $this->getReleaseYear(),
-                'genre' => $this->getGenre(),
+                'name' => $this->getName(),
                 'poster_path' => $this->getPosterPath(),
             ]);
 
             $this->setId($pdo->lastInsertId());
         } else {
-            $sql = 'UPDATE production
-                    SET title = :title,
-                        type = :type,
-                        description = :description,
-                        release_year = :release_year,
-                        genre = :genre,
-                        poster_path = :poster_path
-                    WHERE id = :id';
+            $sql = 'UPDATE platform SET name = :name, poster_path = :poster_path WHERE id = :id';
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                'title' => $this->getTitle(),
-                'type' => $this->getType(),
-                'description' => $this->getDescription(),
-                'release_year' => $this->getReleaseYear(),
-                'genre' => $this->getGenre(),
+                'name' => $this->getName(),
                 'poster_path' => $this->getPosterPath(),
                 'id' => $this->getId(),
             ]);
@@ -212,24 +124,16 @@ class Production
 
     public function delete(): void
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
-        $sql = 'DELETE FROM production WHERE id = :id';
+        $sql = 'DELETE FROM platform WHERE id = :id';
         $statement = $pdo->prepare($sql);
         $statement->execute([
             'id' => $this->getId(),
         ]);
 
         $this->setId(null);
-        $this->setTitle(null);
-        $this->setType(null);
-        $this->setDescription(null);
-        $this->setReleaseYear(null);
-        $this->setGenre(null);
+        $this->setName(null);
         $this->setPosterPath(null);
     }
 }

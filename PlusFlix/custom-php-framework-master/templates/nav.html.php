@@ -8,6 +8,9 @@
         </a>
         <ul class="nav-menu">
             <li><a href="<?= $router->generatePath('home-index') ?>" class="active">Home</a></li>
+            <li><a href="<?= $router->generatePath('production-add') ?>" class="inactive">
+                    + Add production
+                </a></li>
             <li><a href="#">Favorites</a></li>
         </ul>
     </div>

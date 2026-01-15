@@ -44,6 +44,8 @@ ob_start(); ?>
                         <div class="detail-header">
                             <h1><?= htmlspecialchars($titleText) ?></h1>
                             <button class="favorite-btn-detail active" type="button">♥</button>
+                            <a href="<?= $router->generatePath('production-edit', ['id' => $production->getId()]) ?>"
+                               class="edit-btn-detail">Edit</a>
                         </div>
 
                         <div class="detail-meta">
@@ -69,10 +71,12 @@ ob_start(); ?>
                                     $inactiveClass = $isAvailable ? '' : ' inactive';
                                     ?>
 
-                                    <div class="platform-badge <?= htmlspecialchars($ui['class']) ?><?= $inactiveClass ?>">
-                                        <span><?= htmlspecialchars($ui['letter']) ?></span>
-                                        <?= htmlspecialchars($ui['label']) ?>
-                                    </div>
+                                    <?php if ($isAvailable): ?>
+                                        <div class="platform-badge <?= htmlspecialchars($ui['class']) ?><?= $inactiveClass ?>">
+                                            <span><?= htmlspecialchars($ui['letter']) ?></span>
+                                            <?= htmlspecialchars($ui['label']) ?>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </div>
                         </div>

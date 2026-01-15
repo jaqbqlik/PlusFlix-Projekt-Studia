@@ -17,20 +17,28 @@ switch ($action) {
         break;
 
     case 'home-show':
-        if (! $_REQUEST['id']) {
+        if (!isset($_REQUEST['id'])) {
             break;
         }
         $controller = new \App\Controller\HomeController();
         $view = $controller->showAction((int)$_REQUEST['id'], $templating, $router);
         break;
 
-    case 'home-create':
+    case 'production-add':
         $controller = new \App\Controller\HomeController();
-        $view = $controller->createAction($_REQUEST['production'] ?? null, $templating, $router);
+        $view = $controller->addAction($_POST, $templating, $router);
+        break;
+
+    case 'production-edit':
+        if (!isset($_REQUEST['id'])) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->editAction((int)$_REQUEST['id'], $_POST, $templating, $router);
         break;
 
     case 'home-delete':
-        if (! $_REQUEST['id']) {
+        if (!isset($_REQUEST['id'])) {
             break;
         }
         $controller = new \App\Controller\HomeController();

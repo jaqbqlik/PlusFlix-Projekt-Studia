@@ -7,6 +7,7 @@ use App\Model\Production;
 use App\Service\Router;
 use App\Service\Templating;
 use App\Model\ProductionAvailability;
+use App\Model\Platform;
 
 class HomeController
 {
@@ -78,4 +79,121 @@ class HomeController
 
         return null;
     }
+
+    // +++ Segment Jakuba, do add-production i edit-production +++ //
+    public function addAction(?array $requestPost, Templating $templating, Router $router): ?string
+    {
+        $allPlatforms = Platform::findAll();
+
+        if ($requestPost) {
+            // 1. Zapis produkcji
+            $production = Production::fromArray([
+                'title' => $requestPost['title'] ?? '',
+                'type' => $requestPost['type'] ?? 'film',
+                'description' => $requestPost['description'] ?? '',
+                'release_year' => $requestPost['release_year'] ?? null,
+                'genre' => $requestPost['genre'] ?? '',
+                'poster_path' => $requestPost['poster_path'] ?? '/images/placeholder-user.jpg',
+            ]);
+
+            $production->save();
+            $productionId = $production->getId();
+
+            // 2. Zapis platform (jeśli są wybrane)
+            if (isset($requestPost['platforms']) && is_array($requestPost['platforms'])) {
+                foreach ($requestPost['platforms'] as $platformId) {
+                    $availability = ProductionAvailability::fromArray([
+                        'production_id' => $productionId,
+                        'platform_id' => $platformId,
+                        'is_available' => 1
+                    ]);
+                    $availability->save();
+                }
+            }
+
+            $path = $router->generatePath('home-index');
+            $router->redirect($path);
+            return null;
+        }
+
+        $html = $templating->render('home/add.html.php', [
+            'router' => $router,
+            'allPlatforms' => $allPlatforms,
+        ]);
+
+        return $html;
+    }
+
+    // Edytuj istniejącą produkcję
+    public function editAction(int $productionId, ?array $requestPost, Templating $templating, Router $router): ?string
+    {
+        $production = Production::find($productionId);
+        if (!$production) {
+            throw new NotFoundException("Missing production with id $productionId");
+        }
+
+        $allPlatforms = Platform::findAll();
+        $currentPlatforms = ProductionAvailability::findAllByProduction($productionId);
+        $currentPlatformIds = array_map(fn($p) => $p->getPlatformId(), $currentPlatforms);
+
+        if ($requestPost) {
+            if (isset($requestPost['delete'])) {
+                // Usuń produkcję
+                $production->delete();
+                $path = $router->generatePath('home-index');
+                $router->redirect($path);
+                return null;
+            }
+
+            // Aktualizuj produkcję
+            $production->setTitle($requestPost['title'] ?? '');
+            $production->setType($requestPost['type'] ?? 'film');
+            $production->setDescription($requestPost['description'] ?? '');
+            $production->setReleaseYear($requestPost['release_year'] ?? null);
+            $production->setGenre($requestPost['genre'] ?? '');
+            $production->setPosterPath($requestPost['poster_path'] ?? '/images/placeholder-user.jpg');
+            $production->save();
+
+            // Aktualizuj platformy
+            $selectedPlatformIds = $requestPost['platforms'] ?? [];
+
+            // Usuń nieaktualne
+            foreach ($currentPlatforms as $platform) {
+                if (!in_array($platform->getPlatformId(), $selectedPlatformIds)) {
+                    $platform->delete();
+                }
+            }
+
+            // Dodaj nowe
+            foreach ($selectedPlatformIds as $platformId) {
+                if (!in_array($platformId, $currentPlatformIds)) {
+                    $availability = ProductionAvailability::fromArray([
+                        'production_id' => $productionId,
+                        'platform_id' => $platformId,
+                        'is_available' => 1
+                    ]);
+                    $availability->save();
+                }
+            }
+
+            $path = $router->generatePath('home-show', ['id' => $productionId]);
+            $router->redirect($path);
+            return null;
+        }
+
+        $html = $templating->render('home/edit.html.php', [
+            'production' => $production,
+            'allPlatforms' => $allPlatforms,
+            'currentPlatformIds' => $currentPlatformIds,
+            'router' => $router,
+        ]);
+
+        return $html;
+    }
+    // +++ Koniec  +++ //
+
+
+
 }
+
+
