@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/PlusFlix/custom-php-framework-master/sql/01-DB-v1.sql" dialect="SQLite" />
-    <file url="file://$PROJECT_DIR$/PlusFlix/custom-php-framework-master/sql/02-insert.sql" dialect="SQLite" />
-    <file url="file://$PROJECT_DIR$/PlusFlix/custom-php-framework-master/sql/03-insert-Platforms.sql" dialect="SQLite" />
-  </component>
-</project>
