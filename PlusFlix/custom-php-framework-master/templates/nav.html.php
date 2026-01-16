@@ -7,11 +7,24 @@
             <?= htmlspecialchars($title) ?>
         </a>
         <ul class="nav-menu">
-            <li><a href="<?= $router->generatePath('home-index') ?>" class="active">Home</a></li>
-            <li><a href="<?= $router->generatePath('production-add') ?>" class="inactive">
-                    + Add production
-                </a></li>
-            <li><a href="#">Favorites</a></li>
+            <li>
+                <a href="<?= $router->generatePath('home-index') ?>" class="active">
+                    <span class="nav-text">Home</span>
+                    <span class="nav-icon">🏠</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?= $router->generatePath('production-add') ?>">
+                    <span class="nav-text">+ Add production</span>
+                    <span class="nav-icon">+</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="nav-text">Favorites</span>
+                    <span class="nav-icon">♥</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
