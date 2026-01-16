@@ -102,18 +102,6 @@ ob_start(); ?>
         </div>
     </main>
 
-    <script>
-        document.querySelector('.favorite-btn-detail').addEventListener('click', function() {
-            if (this.classList.contains('active')) {
-                this.classList.remove('active');
-                this.innerHTML = '♡';
-            } else {
-                this.classList.add('active');
-                this.innerHTML = '♥';
-            }
-        });
-    </script>
-
 <?php $main = ob_get_clean();
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

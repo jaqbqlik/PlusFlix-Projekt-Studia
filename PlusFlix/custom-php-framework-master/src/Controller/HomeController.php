@@ -43,28 +43,6 @@ class HomeController
         return $html;
     }
 
-    public function createAction(?array $requestPost, Templating $templating, Router $router): ?string
-    {
-        if ($requestPost) {
-            $production = Production::fromArray($requestPost);
-            // @todo validation
-            $production->save();
-
-            $path = $router->generatePath('production-index');
-            $router->redirect($path);
-            return null;
-        }
-
-        $production = new Production();
-
-        $html = $templating->render('home/create.html.php', [
-            'production' => $production,
-            'router' => $router,
-        ]);
-
-        return $html;
-    }
-
     public function deleteAction(int $productionId, Router $router): ?string
     {
         $production = Production::find($productionId);
@@ -80,13 +58,11 @@ class HomeController
         return null;
     }
 
-    // +++ Segment Jakuba, do add-production i edit-production +++ //
     public function addAction(?array $requestPost, Templating $templating, Router $router): ?string
     {
         $allPlatforms = Platform::findAll();
 
         if ($requestPost) {
-            // 1. Zapis produkcji
             $production = Production::fromArray([
                 'title' => $requestPost['title'] ?? '',
                 'type' => $requestPost['type'] ?? 'film',
@@ -99,7 +75,6 @@ class HomeController
             $production->save();
             $productionId = $production->getId();
 
-            // 2. Zapis platform (jeśli są wybrane)
             if (isset($requestPost['platforms']) && is_array($requestPost['platforms'])) {
                 foreach ($requestPost['platforms'] as $platformId) {
                     $availability = ProductionAvailability::fromArray([
@@ -124,7 +99,6 @@ class HomeController
         return $html;
     }
 
-    // Edytuj istniejącą produkcję
     public function editAction(int $productionId, ?array $requestPost, Templating $templating, Router $router): ?string
     {
         $production = Production::find($productionId);
@@ -138,14 +112,12 @@ class HomeController
 
         if ($requestPost) {
             if (isset($requestPost['delete'])) {
-                // Usuń produkcję
                 $production->delete();
                 $path = $router->generatePath('home-index');
                 $router->redirect($path);
                 return null;
             }
 
-            // Aktualizuj produkcję
             $production->setTitle($requestPost['title'] ?? '');
             $production->setType($requestPost['type'] ?? 'film');
             $production->setDescription($requestPost['description'] ?? '');
@@ -154,17 +126,14 @@ class HomeController
             $production->setPosterPath($requestPost['poster_path'] ?? '/images/placeholder-user.jpg');
             $production->save();
 
-            // Aktualizuj platformy
             $selectedPlatformIds = $requestPost['platforms'] ?? [];
 
-            // Usuń nieaktualne
             foreach ($currentPlatforms as $platform) {
                 if (!in_array($platform->getPlatformId(), $selectedPlatformIds)) {
                     $platform->delete();
                 }
             }
 
-            // Dodaj nowe
             foreach ($selectedPlatformIds as $platformId) {
                 if (!in_array($platformId, $currentPlatformIds)) {
                     $availability = ProductionAvailability::fromArray([
@@ -190,7 +159,6 @@ class HomeController
 
         return $html;
     }
-    // +++ Koniec  +++ //
 
     public function searchAction(?string $query): string
     {
@@ -212,10 +180,4 @@ class HomeController
         echo json_encode($results);
         exit;
     }
-
-
-
-
 }
-
-

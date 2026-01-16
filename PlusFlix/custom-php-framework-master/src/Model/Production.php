@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Service\Config;
+use App\Service\Database;
 
 class Production
 {
@@ -127,7 +127,7 @@ class Production
 
     public static function findAll(): array
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
 
         $sql = 'SELECT * FROM production';
         $statement = $pdo->prepare($sql);
@@ -144,11 +144,7 @@ class Production
 
     public static function find($id): ?Production
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = Database::getInstance();
 
         $sql = 'SELECT * FROM production WHERE id = :id';
         $statement = $pdo->prepare($sql);
@@ -164,11 +160,7 @@ class Production
 
     public function save(): void
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = Database::getInstance();
 
         if (! $this->getId()) {
             $sql = 'INSERT INTO production (title, type, description, release_year, genre, poster_path)
@@ -208,11 +200,7 @@ class Production
 
     public function delete(): void
     {
-        $pdo = new \PDO(
-            Config::get('db_dsn'),
-            Config::get('db_user'),
-            Config::get('db_pass')
-        );
+        $pdo = Database::getInstance();
 
         $sql = 'DELETE FROM production WHERE id = :id';
         $statement = $pdo->prepare($sql);

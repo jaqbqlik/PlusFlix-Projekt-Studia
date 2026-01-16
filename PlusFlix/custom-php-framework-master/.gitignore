@@ -1,2 +1,4 @@
 .idea
 /data.db
+/public/assets/dist/
+/config/config.php

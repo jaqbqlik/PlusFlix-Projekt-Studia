@@ -2,14 +2,14 @@
 
 namespace App\Model;
 
-use App\Service\Config;
+use App\Service\Database;
 
 class ProductionAvailability
 {
     private ?int $id = null;
     private ?int $productionId = null;
     private ?int $platformId = null;
-    private ?int $isAvailable = 1; // 0/1 jak w DB
+    private ?int $isAvailable = 1;
 
     public function getId(): ?int
     {
@@ -82,7 +82,7 @@ class ProductionAvailability
 
     public static function findAll(): array
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
         $sql = 'SELECT * FROM production_availability';
         $statement = $pdo->prepare($sql);
         $statement->execute();
@@ -97,7 +97,7 @@ class ProductionAvailability
 
     public static function findAllByProduction($productionId): array
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
         $sql = 'SELECT * FROM production_availability WHERE production_id = :pid';
         $statement = $pdo->prepare($sql);
         $statement->execute(['pid' => $productionId]);
@@ -112,7 +112,7 @@ class ProductionAvailability
 
     public static function findOneByPair($productionId, $platformId): ?ProductionAvailability
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
         $sql = 'SELECT * FROM production_availability WHERE production_id = :pid AND platform_id = :plid';
         $statement = $pdo->prepare($sql);
         $statement->execute([
@@ -129,7 +129,7 @@ class ProductionAvailability
 
     public function save(): void
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
 
         $existing = self::findOneByPair($this->getProductionId(), $this->getPlatformId());
 
@@ -156,7 +156,7 @@ class ProductionAvailability
 
     public function delete(): void
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
 
         $sql = 'DELETE FROM production_availability WHERE id = :id';
         $statement = $pdo->prepare($sql);
@@ -174,7 +174,7 @@ class ProductionAvailability
      */
     public static function findAllPlatformsWithAvailabilityByProduction($productionId): array
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
 
         $sql = '
             SELECT 
@@ -201,7 +201,7 @@ class ProductionAvailability
      */
     public static function findAvailablePlatformsMap(): array
     {
-        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $pdo = Database::getInstance();
 
         $sql = '
             SELECT pa.production_id, p.name
