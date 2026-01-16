@@ -1,20 +1,29 @@
-#Bezpieczny workflow z GITEM
+# PlusFlix
 
-#ZAWSZE w tej kolejności:
+Aplikacja do sprawdzania, gdzie można obejrzeć filmy i seriale.
 
-#Przed pracą:
+---
+
+## Workflow GIT
+
+## Przed pracą
+```bash
 git pull origin main
-
-Po pracy:
+```
+## Po pracy
+```
 git add .
 git commit -m "Opis zmian"
 git push origin main
+```
 
-#KOMPILOWANIE (mozna to tak nazwać?) STYLI LESS
-W katalogu
-Projekt\PlusFlix\custom-php-framework-master
-
+## KOMPILOWANIE (mozna to tak nazwać?) STYLI LESS W 
+katalogu Projekt\PlusFlix\custom-php-framework-master
+```
 lessc public\assets\src\less\style.less public\assets\dist\style.min.css --clean-css --source-map
+```
 
-#URUCHOMIENIE STRONY
+## URUCHOMIENIE STRONY
+```
 php -S localhost:56646 -t .\public 
+```

@@ -1,0 +1,159 @@
+.detail-page {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: @textSecondary;
+    font-weight: 500;
+    margin-bottom: 32px;
+    padding: 8px 0;
+
+    &:hover {
+      color: @textPrimary;
+      background-color: transparent;
+    }
+
+    &::before {
+      content: "←";
+      font-size: 1.25rem;
+    }
+  }
+
+  .detail-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+
+    @media (max-width: @mobileBreakpoint) {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    // Kontener postera - dodajemy flexbox
+    > div:first-child {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-poster {
+      width: 100%;
+      height: 100%;  // Poster wypełnia 100% wysokości kontenera
+      object-fit: cover;  // Zachowuje proporcje, przycina jeśli trzeba
+      border-radius: @borderRadiusSmall;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail-content {
+      .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+
+        h1 {
+          margin: 0;
+          flex: 1;
+        }
+
+        .favorite-btn {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background-color: @bgPrimary;
+          border: 1px solid @border;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          transition: all 0.2s;
+          flex-shrink: 0;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+
+          &.active {
+            color: @primaryRed;
+          }
+        }
+      }
+
+      .detail-meta {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 32px;
+        font-size: @fontSize;
+        color: @textSecondary;
+
+        span {
+          &::after {
+            content: "•";
+            margin: 0 8px;
+          }
+
+          &:last-child::after {
+            display: none;
+          }
+        }
+      }
+
+      .platforms-section {
+        margin-bottom: 32px;
+
+        h3 {
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 16px;
+          color: @textPrimary;
+        }
+
+        .platform-badges {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+      }
+
+      .overview-section {
+        margin-bottom: 32px;
+
+        h3 {
+          font-weight: 600;
+          margin-bottom: 12px;
+        }
+
+        p {
+          line-height: 1.7;
+          color: @textSecondary;
+        }
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+
+        @media (max-width: @mobileBreakpoint) {
+          grid-template-columns: 1fr;
+        }
+
+        .info-item {
+          h4 {
+            font-size: @fontSizeSmall;
+            font-weight: 700;
+            color: @textPrimary;
+            margin: 0 0 8px 0;
+          }
+
+          p {
+            margin: 0;
+            color: @textSecondary;
+            line-height: 1.6;
+          }
+        }
+      }
+    }
+  }
+}
