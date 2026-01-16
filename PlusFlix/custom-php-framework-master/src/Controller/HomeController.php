@@ -63,11 +63,15 @@ class HomeController
         $allPlatforms = Platform::findAll();
 
         if ($requestPost) {
+            // Walidacja i czyszczenie danych
+            $releaseYear = $requestPost['release_year'] ?? '';
+            $releaseYear = ($releaseYear === '' || $releaseYear === null) ? null : (int)$releaseYear;
+
             $production = Production::fromArray([
                 'title' => $requestPost['title'] ?? '',
                 'type' => $requestPost['type'] ?? 'film',
                 'description' => $requestPost['description'] ?? '',
-                'release_year' => $requestPost['release_year'] ?? null,
+                'release_year' => $releaseYear,
                 'genre' => $requestPost['genre'] ?? '',
                 'poster_path' => $requestPost['poster_path'] ?? '/images/placeholder-user.jpg',
             ]);
@@ -118,10 +122,14 @@ class HomeController
                 return null;
             }
 
+            // Walidacja i czyszczenie danych
+            $releaseYear = $requestPost['release_year'] ?? '';
+            $releaseYear = ($releaseYear === '' || $releaseYear === null) ? null : (int)$releaseYear;
+
             $production->setTitle($requestPost['title'] ?? '');
             $production->setType($requestPost['type'] ?? 'film');
             $production->setDescription($requestPost['description'] ?? '');
-            $production->setReleaseYear($requestPost['release_year'] ?? null);
+            $production->setReleaseYear($releaseYear);
             $production->setGenre($requestPost['genre'] ?? '');
             $production->setPosterPath($requestPost['poster_path'] ?? '/images/placeholder-user.jpg');
             $production->save();

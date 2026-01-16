@@ -67,7 +67,7 @@ class Platform
 
     public static function findAll(): array
     {
-        $pdo = Database::getInstance();
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
         $sql = 'SELECT * FROM platform ORDER BY name';
         $statement = $pdo->prepare($sql);
@@ -84,7 +84,7 @@ class Platform
 
     public static function find($id): ?Platform
     {
-        $pdo = Database::getInstance();
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
         $sql = 'SELECT * FROM platform WHERE id = :id';
         $statement = $pdo->prepare($sql);
@@ -100,7 +100,7 @@ class Platform
 
     public function save(): void
     {
-        $pdo = Database::getInstance();
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
         if (!$this->getId()) {
             $sql = 'INSERT INTO platform (name, poster_path) VALUES (:name, :poster_path)';
@@ -124,7 +124,7 @@ class Platform
 
     public function delete(): void
     {
-        $pdo = Database::getInstance();
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
 
         $sql = 'DELETE FROM platform WHERE id = :id';
         $statement = $pdo->prepare($sql);

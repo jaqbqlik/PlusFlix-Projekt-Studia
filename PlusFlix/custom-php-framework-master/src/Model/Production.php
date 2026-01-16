@@ -112,9 +112,21 @@ class Production
         if (isset($array['description'])) {
             $this->setDescription($array['description']);
         }
+
+        // POPRAWKA - obsługa release_year jako null lub int
+        // bo wywalało kod błędu przy pustej wartości
+
         if (isset($array['release_year'])) {
-            $this->setReleaseYear($array['release_year']);
+            $year = $array['release_year'];
+
+            if ($year === '' || $year === null) {
+                $this->setReleaseYear(null);
+            } else {
+
+                $this->setReleaseYear((int)$year);
+            }
         }
+
         if (isset($array['genre'])) {
             $this->setGenre($array['genre']);
         }
