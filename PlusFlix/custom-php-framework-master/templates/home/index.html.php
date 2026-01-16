@@ -11,7 +11,7 @@ ob_start(); ?>
     <div class="search-section">
         <div class="container">
             <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Search for movies or series...">
+                <input type="text" id="search-input" placeholder="Search for movies or series..." autocomplete="off">
                 <ul id="search-suggestions" class="search-suggestions"></ul>
             </div>
         </div>
