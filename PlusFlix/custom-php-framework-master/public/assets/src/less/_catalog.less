@@ -31,10 +31,38 @@
     &::before {
       content: "🔍";
       position: absolute;
-      left: 18px;
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
       font-size: 1.1rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    ul.search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: @bgPrimary;
+      border: 1px solid @border;
+      border-radius: @borderRadiusSmall;
+      margin: 4px 0 0 0;
+      padding: 0;
+      list-style: none;
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 5;
+
+      li {
+        padding: 10px 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: @bgSecondary;
+        }
+      }
     }
   }
 }
