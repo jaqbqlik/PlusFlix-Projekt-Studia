@@ -11,7 +11,8 @@ ob_start(); ?>
     <div class="search-section">
         <div class="container">
             <div class="search-bar">
-                <input type="text" placeholder="Search for movies or series...">
+                <input type="text" id="search-input" placeholder="Search for movies or series...">
+                <ul id="search-suggestions" class="search-suggestions"></ul>
             </div>
         </div>
     </div>
@@ -94,7 +95,41 @@ ob_start(); ?>
                 }
             });
         });
+
+        const searchInput = document.getElementById('search-input');
+        const suggestions = document.getElementById('search-suggestions');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            if (query.length === 0) {
+                suggestions.innerHTML = '';
+                return;
+            }
+
+            fetch(`/index.php?action=home-search&q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    suggestions.innerHTML = '';
+                    data.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.title + ' (' + (item.type === 'film' ? 'Movie' : 'Series') + ')';
+                        li.addEventListener('click', () => {
+                            window.location.href = `/index.php?action=home-show&id=${item.id}`;
+                        });
+                        suggestions.appendChild(li);
+                    });
+                });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target)) {
+                suggestions.innerHTML = '';
+            }
+        });
+
     </script>
+
+
 
 <?php $main = ob_get_clean();
 

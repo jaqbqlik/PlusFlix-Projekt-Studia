@@ -45,6 +45,12 @@ switch ($action) {
         $view = $controller->deleteAction((int)$_REQUEST['id'], $router);
         break;
 
+    case 'home-search':
+        $controller = new \App\Controller\HomeController();
+        $query = $_GET['q'] ?? '';
+        $controller->searchAction($query);
+        break;
+
     default:
         $view = 'Not found';
         break;

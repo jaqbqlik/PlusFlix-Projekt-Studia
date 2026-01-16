@@ -192,6 +192,28 @@ class HomeController
     }
     // +++ Koniec  +++ //
 
+    public function searchAction(?string $query): string
+    {
+        $results = [];
+
+        if ($query) {
+            $pdo = new \PDO(\App\Service\Config::get('db_dsn'),
+                \App\Service\Config::get('db_user'),
+                \App\Service\Config::get('db_pass'));
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            $sql = 'SELECT id, title, type FROM production WHERE title LIKE :q ORDER BY title LIMIT 10';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['q' => '%' . $query . '%']);
+            $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($results);
+        exit;
+    }
+
+
 
 
 }
