@@ -29,8 +29,16 @@
       gap: 32px;
     }
 
+    // Kontener postera - dodajemy flexbox
+    > div:first-child {
+      display: flex;
+      flex-direction: column;
+    }
+
     .detail-poster {
       width: 100%;
+      height: 100%;  // Poster wypełnia 100% wysokości kontenera
+      object-fit: cover;  // Zachowuje proporcje, przycina jeśli trzeba
       border-radius: @borderRadiusSmall;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
