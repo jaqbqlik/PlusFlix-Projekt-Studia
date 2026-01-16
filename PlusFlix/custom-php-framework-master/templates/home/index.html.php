@@ -48,7 +48,7 @@ ob_start(); ?>
                     ?>
 
                     <a href="<?= $router->generatePath('home-show', ['id' => $id]) ?>" class="production-card">
-                        <button class="favorite-btn" type="button">♡</button>
+                        <button class="favorite-btn-detail smoll-fav-btn" type="button">♡</button>
 
                         <img src="<?= htmlspecialchars($posterSrc) ?>"
                              alt="<?= htmlspecialchars($titleText) ?>"
@@ -81,21 +81,7 @@ ob_start(); ?>
     </main>
 
     <script>
-        document.querySelectorAll('.favorite-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (this.classList.contains('active')) {
-                    this.classList.remove('active');
-                    this.innerHTML = '♡';
-                } else {
-                    this.classList.add('active');
-                    this.innerHTML = '♥';
-                }
-            });
-        });
-
+        // Search functionality - ZOSTAJE TU
         const searchInput = document.getElementById('search-input');
         const suggestions = document.getElementById('search-suggestions');
 
@@ -126,10 +112,7 @@ ob_start(); ?>
                 suggestions.innerHTML = '';
             }
         });
-
     </script>
-
-
 
 <?php $main = ob_get_clean();
 

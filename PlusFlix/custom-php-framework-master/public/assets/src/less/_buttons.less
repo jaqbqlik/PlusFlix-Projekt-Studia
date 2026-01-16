@@ -34,6 +34,24 @@
   &.active {
     color: @primaryRed;
   }
+
+  // Wersja mała dla kart
+  &.smoll-fav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    margin-left: 0;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  }
 }
 
 .edit-btn-detail {

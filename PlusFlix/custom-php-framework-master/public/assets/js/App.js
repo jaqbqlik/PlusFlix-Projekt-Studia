@@ -1,5 +1,5 @@
 
-// +++ KM1 funkcje do przycisku ulubione +++ //
+
 document.addEventListener('DOMContentLoaded', function() {
     initFavoriteButtons();
 });
@@ -9,11 +9,14 @@ function initFavoriteButtons() {
     const favoriteButtons = document.querySelectorAll('.favorite-btn-detail');
 
     favoriteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             toggleFavorite(this);
         });
     });
 }
+
 
 function toggleFavorite(button) {
     if (button.classList.contains('active')) {
@@ -24,4 +27,3 @@ function toggleFavorite(button) {
         button.innerHTML = '♥';
     }
 }
-// +++ Koniec +++ //
