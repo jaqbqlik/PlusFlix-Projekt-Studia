@@ -45,6 +45,9 @@ class HomeController
 
     public function deleteAction(int $productionId, Router $router): ?string
     {
+        //Wymaga Admina
+        AdminController::requireAdmin($router);
+
         $production = Production::find($productionId);
         if (! $production) {
             throw new NotFoundException("Missing production with id $productionId");
@@ -60,10 +63,13 @@ class HomeController
 
     public function addAction(?array $requestPost, Templating $templating, Router $router): ?string
     {
+        //Wymaga Admina
+        AdminController::requireAdmin($router);
+
         $allPlatforms = Platform::findAll();
 
         if ($requestPost) {
-            // Walidacja i czyszczenie danych
+            //Walidacja i czyszczenie danych
             $releaseYear = $requestPost['release_year'] ?? '';
             $releaseYear = ($releaseYear === '' || $releaseYear === null) ? null : (int)$releaseYear;
 
@@ -105,6 +111,9 @@ class HomeController
 
     public function editAction(int $productionId, ?array $requestPost, Templating $templating, Router $router): ?string
     {
+        //Wymaga Admina
+        AdminController::requireAdmin($router);
+
         $production = Production::find($productionId);
         if (!$production) {
             throw new NotFoundException("Missing production with id $productionId");
@@ -122,7 +131,7 @@ class HomeController
                 return null;
             }
 
-            // Walidacja i czyszczenie danych
+            //Walidacja i czyszczenie danych
             $releaseYear = $requestPost['release_year'] ?? '';
             $releaseYear = ($releaseYear === '' || $releaseYear === null) ? null : (int)$releaseYear;
 

@@ -72,6 +72,12 @@ nav {
           background-color: @textPrimary;
         }
 
+        &.logout-btn {
+          &:hover {
+            background-color: @primaryRed;
+            color: white;
+          }
+        }
 
         .nav-text {
           display: inline;
@@ -83,7 +89,7 @@ nav {
         }
 
 
-        @media (max-width: 750px) {
+        @media (max-width: 800px) {
           &.active {
             display: none;
           }
@@ -101,6 +107,29 @@ nav {
             display: inline;
           }
         }
+      }
+
+      &.admin-status {
+        margin-left: auto;
+
+        .admin-username {
+          color: #fff;
+          background-color: @textPrimary;
+          padding: 10px 20px;
+          border-radius: @borderRadiusSmall;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+
+          @media (max-width: 530px) {
+            padding: 10px 12px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      &.admin-login {
+        margin-left: auto;
       }
     }
   }

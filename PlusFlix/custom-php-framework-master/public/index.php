@@ -6,9 +6,23 @@ $config = new \App\Service\Config();
 $templating = new \App\Service\Templating();
 $router = new \App\Service\Router();
 
+\App\Service\GuestSession::initGuestSession();
+
+\App\Model\Session::cleanExpiredSessions();
+
 $action = $_REQUEST['action'] ?? null;
 
 switch ($action) {
+
+    case 'admin-login':
+        $controller = new \App\Controller\AdminController();
+        $view = $controller->loginAction($_POST, $templating, $router);
+        break;
+
+    case 'admin-logout':
+        $controller = new \App\Controller\AdminController();
+        $view = $controller->logoutAction($router);
+        break;
 
     case 'home-index':
     case null:

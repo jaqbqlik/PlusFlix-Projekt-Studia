@@ -1,0 +1,108 @@
+@import "_variables";
+
+.admin-login-container {
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 0 20px;
+}
+
+.admin-login-card {
+  background: @bgCard;
+  padding: 40px;
+  border-radius: @borderRadius;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: @textPrimary;
+    font-size: 28px;
+  }
+}
+
+.admin-login-error {
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  border-radius: @borderRadiusSmall;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.admin-login-form {
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: @textPrimary;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid @border;
+      border-radius: @borderRadiusSmall;
+      font-size: 16px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: @primaryBlue;
+      }
+    }
+  }
+
+  .submit-group {
+    margin-bottom: 30px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: @primaryBlue;
+    color: white;
+    border: none;
+    border-radius: @borderRadiusSmall;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken(@primaryBlue, 10%);
+    }
+  }
+}
+
+.admin-login-info {
+  margin-top: 20px;
+  text-align: center;
+  color: @textSecondary;
+  font-size: 14px;
+
+  p {
+    margin: 5px 0;
+  }
+
+  strong {
+    color: @textPrimary;
+  }
+}
+
+.admin-login-back {
+  margin-top: 20px;
+  text-align: center;
+
+  a {
+    color: @primaryBlue;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover {
+      color: darken(@primaryBlue, 10%);
+    }
+  }
+}
