@@ -65,6 +65,18 @@ switch ($action) {
         $controller->searchAction($query);
         break;
 
+    case 'favorites-index':
+        $controller = new \App\Controller\FavoritesController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+
+    case 'favorites-toggle':
+        if (!isset($_REQUEST['id'])) break;
+        $controller = new \App\Controller\FavoritesController();
+        $controller->toggleAction((int)$_REQUEST['id'], $router);
+        break;
+
+
     default:
         $view = 'Not found';
         break;

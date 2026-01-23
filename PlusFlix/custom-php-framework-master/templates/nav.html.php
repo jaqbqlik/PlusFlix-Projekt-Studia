@@ -26,7 +26,7 @@ $adminUsername = $_SESSION['admin_username'] ?? null;
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= $router->generatePath('favorites-index') ?>">
                     <span class="nav-text">Favorites</span>
                     <span class="nav-icon">♥</span>
                 </a>
