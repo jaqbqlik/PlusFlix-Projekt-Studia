@@ -48,4 +48,23 @@ class FavoritesController
 
         $router->redirect($_SERVER['HTTP_REFERER'] ?? $router->generatePath('home-index'));
     }
+
+    public function toggleAjaxAction(int $productionId): void
+    {
+        header('Content-Type: application/json');
+
+        $guestId = \App\Service\GuestSession::getGuestId();
+        $session = \App\Model\Session::findByGuestId($guestId);
+        $list = \App\Model\UserList::findOrCreateFavorites($session->getId());
+
+        $isFavorite = \App\Model\ListProduction::toggle($list->getId(), $productionId);
+
+        echo json_encode([
+            'success' => true,
+            'favorite' => $isFavorite
+        ]);
+
+        exit;
+    }
+
 }

@@ -52,9 +52,10 @@ ob_start(); ?>
                     <a href="<?= $router->generatePath('home-show', ['id' => $id]) ?>" class="production-card">
                         <?php $isFav = isset($favoriteMap[$id]); ?>
 
-                        <button class="favorite-btn-detail smoll-fav-btn <?= $isFav ? 'active' : '' ?>"
-                                type="button"
-                                data-fav-url="<?= $router->generatePath('favorites-toggle', ['id' => $id]) ?>">
+                        <button
+                                class="favorite-btn-detail smoll-fav-btn <?= $isFav ? 'active' : '' ?>"
+                                data-production-id="<?= $id ?>"
+                                type="button">
                             <?= $isFav ? '♥' : '♡' ?>
                         </button>
 

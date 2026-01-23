@@ -75,6 +75,12 @@ switch ($action) {
         $controller = new \App\Controller\FavoritesController();
         $controller->toggleAction((int)$_REQUEST['id'], $router);
         break;
+    case 'favorites-toggle-ajax':
+        if (!$_REQUEST['id']) break;
+        $controller = new \App\Controller\FavoritesController();
+        $controller->toggleAjaxAction((int)$_REQUEST['id']);
+        $view = null;
+        break;
 
 
     default:

@@ -45,10 +45,14 @@ ob_start(); ?>
                     <div class="detail-content">
                         <div class="detail-header">
                             <h1><?= htmlspecialchars($titleText) ?></h1>
-                            <button class="favorite-btn-detail <?= $isFavorite ? 'active' : '' ?>" type="button"
-                                    data-fav-url="<?= $router->generatePath('favorites-toggle', ['id' => (int)$production->getId()]) ?>">
-                                <?= $isFavorite ? '♥' : '♡' ?>
+                            <?= $id = (int)$production->getId(); ?>
+                            <button
+                                    class="favorite-btn-detail smoll-fav-btn <?= $isFav ? 'active' : '' ?>"
+                                    data-production-id="<?= $id ?>"
+                                    type="button">
+                                <?= $isFav ? '♥' : '♡' ?>
                             </button>
+
 
                             <a href="<?= $router->generatePath('production-edit', ['id' => $production->getId()]) ?>"
                                class="edit-btn-detail">Edit</a>
