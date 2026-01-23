@@ -9,6 +9,15 @@ $title = 'My Favorites';
 $bodyClass = 'favorites';
 
 ob_start(); ?>
+    <div class="search-section">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search in favorites." autocomplete="off">
+                <ul id="search-suggestions" class="search-suggestions"></ul>
+            </div>
+        </div>
+    </div>
+
     <main>
         <div class="container">
             <h2 class="section-title">❤️ My Favorites</h2>
@@ -80,18 +89,6 @@ ob_start(); ?>
             <?php endif; ?>
         </div>
     </main>
-
-    <script>
-        // toggle favorite
-        document.querySelectorAll('.smoll-fav-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const url = this.getAttribute('data-fav-url');
-                if (url) window.location.href = url;
-            });
-        });
-    </script>
 
 <?php $main = ob_get_clean();
 
