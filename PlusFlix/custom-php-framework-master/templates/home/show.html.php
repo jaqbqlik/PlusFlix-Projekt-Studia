@@ -47,7 +47,7 @@ ob_start(); ?>
                             <h1><?= htmlspecialchars($titleText) ?></h1>
                             <?= $id = (int)$production->getId(); ?>
                             <button
-                                    class="favorite-btn-detail smoll-fav-btn <?= $isFavorite ? 'active' : '' ?>"
+                                    class="favorite-btn-detail <?= $isFavorite ? 'active' : '' ?>"
                                     data-production-id="<?= $id ?>"
                                     type="button">
                                 <?= $isFavorite ? '♥' : '♡' ?>
