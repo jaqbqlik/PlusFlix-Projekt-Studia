@@ -1,32 +1,93 @@
 <?php
-
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-use App\Controller\HomeController;
-use App\Service\Config;
-use App\Service\Templating;
-use App\Service\Router;
+$config = new \App\Service\Config();
 
-$config = new Config();
-$templating = new Templating();
-$router = new Router();
+$templating = new \App\Service\Templating();
+$router = new \App\Service\Router();
 
-$action = $_REQUEST['action'] ?? 'home-index';
+\App\Service\GuestSession::initGuestSession();
+
+\App\Model\Session::cleanExpiredSessions();
+
+$action = $_REQUEST['action'] ?? null;
 
 switch ($action) {
+
+    case 'admin-login':
+        $controller = new \App\Controller\AdminController();
+        $view = $controller->loginAction($_POST, $templating, $router);
+        break;
+
+    case 'admin-logout':
+        $controller = new \App\Controller\AdminController();
+        $view = $controller->logoutAction($router);
+        break;
+
     case 'home-index':
     case null:
-        $controller = new HomeController();
+        $controller = new \App\Controller\HomeController();
         $view = $controller->indexAction($templating, $router);
         break;
 
     case 'home-show':
-        $controller = new HomeController();
-        $view = $controller->showAction($templating, $router);
+        if (!isset($_REQUEST['id'])) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->showAction((int)$_REQUEST['id'], $templating, $router);
         break;
+
+    case 'production-add':
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->addAction($_POST, $templating, $router);
+        break;
+
+    case 'production-edit':
+        if (!isset($_REQUEST['id'])) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->editAction((int)$_REQUEST['id'], $_POST, $templating, $router);
+        break;
+
+    case 'home-delete':
+        if (!isset($_REQUEST['id'])) {
+            break;
+        }
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->deleteAction((int)$_REQUEST['id'], $router);
+        break;
+
+    case 'home-search':
+        $controller = new \App\Controller\HomeController();
+        $query = $_GET['q'] ?? '';
+        $controller->searchAction($query);
+        break;
+
+    case 'favorites-index':
+        $controller = new \App\Controller\FavoritesController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+
+    case 'favorites-toggle':
+        if (!isset($_REQUEST['id'])) break;
+        $controller = new \App\Controller\FavoritesController();
+        $controller->toggleAction((int)$_REQUEST['id'], $router);
+        break;
+    case 'favorites-toggle-ajax':
+        if (!$_REQUEST['id']) break;
+        $controller = new \App\Controller\FavoritesController();
+        $controller->toggleAjaxAction((int)$_REQUEST['id']);
+        $view = null;
+        break;
+
 
     default:
         $view = 'Not found';
+        break;
 }
 
-echo $view;
+if ($view) {
+    echo $view;
+}

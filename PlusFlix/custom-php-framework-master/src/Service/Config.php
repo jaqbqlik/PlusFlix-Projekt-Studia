@@ -18,6 +18,7 @@ class Config
             . DIRECTORY_SEPARATOR . 'config'
             . DIRECTORY_SEPARATOR . 'config.php';
 
+
         if (! file_exists($configFile)) {
             throw new FrameworkException("Invalid configuration file name '$configFile'");
         }

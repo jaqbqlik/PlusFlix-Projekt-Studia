@@ -4,17 +4,18 @@
  * Uruchom: php test-database.php
  */
 
-// Konfiguracja bazy danych
-$dbFile = __DIR__ . DIRECTORY_SEPARATOR . 'data.db';
-$dbDsn = 'sqlite:' . $dbFile;
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'autoload.php';
+
+use App\Service\Database;
+use App\Model\Production;
+use App\Model\Platform;
+use App\Model\ProductionAvailability;
 
 try {
-    $pdo = new PDO($dbDsn);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = Database::getInstance();
 
-    echo "=== PlusFlix - Test Bazy Danych ===\n\n";
+    echo "+++ PlusFlix - Test Bazy Danych +++\n\n";
 
-    // Funkcja do czyszczenia danych
     function clearDatabase($pdo) {
         echo "1. Czyszczenie bazy danych...\n";
         $pdo->exec("DELETE FROM production_availability");
@@ -23,36 +24,35 @@ try {
         echo "   ✓ Dane wyczyszczone\n\n";
     }
 
-    // Funkcja do dodawania platform
-    function insertPlatforms($pdo) {
+    function insertPlatforms() {
         echo "2. Dodawanie platform streamingowych...\n";
-        $platforms = [
+        $platformsData = [
             ['name' => 'Netflix', 'logo_url' => 'https://via.placeholder.com/150x50/e50914/ffffff?text=Netflix'],
             ['name' => 'HBO Max', 'logo_url' => 'https://via.placeholder.com/150x50/9747ff/ffffff?text=HBO'],
             ['name' => 'Disney+', 'logo_url' => 'https://via.placeholder.com/150x50/113ccf/ffffff?text=Disney'],
             ['name' => 'Prime Video', 'logo_url' => 'https://via.placeholder.com/150x50/00a8e1/ffffff?text=Prime']
         ];
 
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("INSERT INTO platform (name, logo_url) VALUES (:name, :logo_url)");
 
-        foreach ($platforms as $platform) {
-            $stmt->execute($platform);
-            echo "   ✓ " . $platform['name'] . "\n";
+        foreach ($platformsData as $platformData) {
+            $stmt->execute($platformData);
+            echo "   ✓ " . $platformData['name'] . "\n";
         }
         echo "\n";
     }
 
-    // Funkcja do dodawania produkcji
-    function insertProductions($pdo) {
+    function insertProductions() {
         echo "3. Dodawanie produkcji filmowych...\n";
-        $productions = [
+        $productionsData = [
             [
                 'title' => 'Stranger Things',
                 'type' => 'serial',
                 'description' => 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.',
                 'release_year' => 2016,
                 'genre' => 'Sci-Fi, Horror, Drama',
-                'poster_url' => 'https://via.placeholder.com/300x450/1a1a2e/e94560?text=Stranger+Things'
+                'poster_path' => '/images/dziwnerzeczy.png'
             ],
             [
                 'title' => 'The Last of Us',
@@ -60,7 +60,7 @@ try {
                 'description' => 'Twenty years after a fungal outbreak ravages the planet, survivors Joel and Ellie embark on a brutal journey across post-pandemic America.',
                 'release_year' => 2023,
                 'genre' => 'Drama, Sci-Fi, Thriller',
-                'poster_url' => 'https://via.placeholder.com/300x450/16213e/0f3460?text=The+Last+of+Us'
+                'poster_path' => '/images/ostatnieznas.jpg'
             ],
             [
                 'title' => 'Dune',
@@ -68,7 +68,7 @@ try {
                 'description' => 'Paul Atreides arrives on Arrakis, the most dangerous planet in the universe, to secure the future of his family and people.',
                 'release_year' => 2021,
                 'genre' => 'Sci-Fi, Adventure',
-                'poster_url' => 'https://via.placeholder.com/300x450/533483/9b59b6?text=Dune'
+                'poster_path' => '/images/diunka.png'
             ],
             [
                 'title' => 'The Mandalorian',
@@ -76,7 +76,7 @@ try {
                 'description' => 'The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.',
                 'release_year' => 2019,
                 'genre' => 'Sci-Fi, Action, Adventure',
-                'poster_url' => 'https://via.placeholder.com/300x450/0f4c75/3282b8?text=Mandalorian'
+                'poster_path' => '/images/mandek.png'
             ],
             [
                 'title' => 'Oppenheimer',
@@ -84,7 +84,7 @@ try {
                 'description' => 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.',
                 'release_year' => 2023,
                 'genre' => 'Biography, Drama, History',
-                'poster_url' => 'https://via.placeholder.com/300x450/2d4059/ea5455?text=Oppenheimer'
+                'poster_path' => '/images/posters/oppenheimer-poster.png'
             ],
             [
                 'title' => 'Wednesday',
@@ -92,59 +92,26 @@ try {
                 'description' => 'Wednesday Addams attempts to master her emerging psychic ability while investigating murders that terrorized the local town.',
                 'release_year' => 2022,
                 'genre' => 'Comedy, Horror, Mystery',
-                'poster_url' => 'https://via.placeholder.com/300x450/1a1a2e/16a085?text=Wednesday'
-            ],
-            [
-                'title' => 'Breaking Bad',
-                'type' => 'serial',
-                'description' => 'A chemistry teacher diagnosed with cancer turns to manufacturing meth to secure his family\'s future.',
-                'release_year' => 2008,
-                'genre' => 'Crime, Drama, Thriller',
-                'poster_url' => 'https://via.placeholder.com/300x450/2c3e50/27ae60?text=Breaking+Bad'
-            ],
-            [
-                'title' => 'The Witcher',
-                'type' => 'serial',
-                'description' => 'Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.',
-                'release_year' => 2019,
-                'genre' => 'Fantasy, Action, Adventure',
-                'poster_url' => 'https://via.placeholder.com/300x450/34495e/e74c3c?text=The+Witcher'
-            ],
-            [
-                'title' => 'Inception',
-                'type' => 'film',
-                'description' => 'A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.',
-                'release_year' => 2010,
-                'genre' => 'Sci-Fi, Action, Thriller',
-                'poster_url' => 'https://via.placeholder.com/300x450/2c3e50/3498db?text=Inception'
-            ],
-            [
-                'title' => 'The Crown',
-                'type' => 'serial',
-                'description' => 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the 20th century.',
-                'release_year' => 2016,
-                'genre' => 'Drama, History',
-                'poster_url' => 'https://via.placeholder.com/300x450/8e44ad/ecf0f1?text=The+Crown'
+                'poster_path' => '/images/czwartek.jpg'
             ]
         ];
 
-        $stmt = $pdo->prepare("
-            INSERT INTO production (title, type, description, release_year, genre, poster_url) 
-            VALUES (:title, :type, :description, :release_year, :genre, :poster_url)
-        ");
-
-        foreach ($productions as $production) {
-            $stmt->execute($production);
-            echo "   ✓ " . $production['title'] . " (" . $production['type'] . ", " . $production['release_year'] . ")\n";
+        foreach ($productionsData as $productionData) {
+            $production = Production::fromArray($productionData);
+            $production->save();
+            echo "   ✓ " . $productionData['title'] . " (" . $productionData['type'] . ", " . $productionData['release_year'] . ")\n";
         }
         echo "\n";
     }
 
-    // Funkcja do przypisywania platform do produkcji
-    function assignPlatforms($pdo) {
+    function assignPlatforms() {
         echo "4. Przypisywanie platform do produkcji...\n";
 
-        $platforms = $pdo->query("SELECT id, name FROM platform")->fetchAll(PDO::FETCH_KEY_PAIR);
+        $platforms = Platform::findAll();
+        $platformMap = [];
+        foreach ($platforms as $platform) {
+            $platformMap[$platform->getName()] = $platform->getId();
+        }
 
         $assignments = [
             1 => ['Netflix'],
@@ -152,25 +119,18 @@ try {
             3 => ['HBO Max', 'Prime Video'],
             4 => ['Disney+'],
             5 => ['Prime Video'],
-            6 => ['Netflix'],
-            7 => ['Netflix'],
-            8 => ['Netflix'],
-            9 => ['HBO Max', 'Prime Video'],
-            10 => ['Netflix']
+            6 => ['Netflix']
         ];
-
-        $stmt = $pdo->prepare("
-            INSERT INTO production_availability (production_id, platform_id, is_available) 
-            VALUES (:production_id, :platform_id, 1)
-        ");
 
         foreach ($assignments as $productionId => $platformNames) {
             foreach ($platformNames as $platformName) {
-                if (isset($platforms[$platformName])) {
-                    $stmt->execute([
+                if (isset($platformMap[$platformName])) {
+                    $availability = ProductionAvailability::fromArray([
                         'production_id' => $productionId,
-                        'platform_id' => $platforms[$platformName]
+                        'platform_id' => $platformMap[$platformName],
+                        'is_available' => 1
                     ]);
+                    $availability->save();
                     echo "   ✓ Produkcja #$productionId → $platformName\n";
                 }
             }
@@ -178,76 +138,55 @@ try {
         echo "\n";
     }
 
-    // Funkcja do wyświetlania danych
     function displayData($pdo) {
         echo "5. Zawartość bazy danych:\n";
-        echo "================================\n\n";
+
 
         echo "PLATFORMY:\n";
         echo "----------\n";
-        $platforms = $pdo->query("SELECT * FROM platform")->fetchAll(PDO::FETCH_ASSOC);
+        $platforms = Platform::findAll();
         foreach ($platforms as $platform) {
-            echo "  ID: {$platform['id']} | {$platform['name']}\n";
+            echo "  ID: {$platform->getId()} | {$platform->getName()}\n";
         }
         echo "\n";
 
         echo "PRODUKCJE:\n";
         echo "----------\n";
-        $query = "
-            SELECT 
-                p.id,
-                p.title,
-                p.type,
-                p.release_year,
-                p.genre,
-                GROUP_CONCAT(pl.name, ', ') as platforms
-            FROM production p
-            LEFT JOIN production_availability pa ON p.id = pa.production_id
-            LEFT JOIN platform pl ON pa.platform_id = pl.id
-            GROUP BY p.id
-            ORDER BY p.title
-        ";
-
-        $productions = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        $productions = Production::findAll();
 
         foreach ($productions as $prod) {
-            echo "\n  #{$prod['id']} - {$prod['title']}\n";
-            echo "      Typ: {$prod['type']} | Rok: {$prod['release_year']}\n";
-            echo "      Gatunek: {$prod['genre']}\n";
-            echo "      Platformy: " . ($prod['platforms'] ?: 'brak') . "\n";
+            $platforms = ProductionAvailability::findAllPlatformsWithAvailabilityByProduction($prod->getId());
+            $platformNames = array_map(fn($p) => $p['name'], array_filter($platforms, fn($p) => $p['is_available']));
+
+            echo "\n  #{$prod->getId()} - {$prod->getTitle()}\n";
+            echo "      Typ: {$prod->getType()} | Rok: {$prod->getReleaseYear()}\n";
+            echo "      Gatunek: {$prod->getGenre()}\n";
+            echo "      Platformy: " . (count($platformNames) > 0 ? implode(', ', $platformNames) : 'brak') . "\n";
         }
         echo "\n";
 
         echo "STATYSTYKI:\n";
         echo "-----------\n";
-        $stats = $pdo->query("
-            SELECT 
-                (SELECT COUNT(*) FROM production) as total_productions,
-                (SELECT COUNT(*) FROM production WHERE type = 'film') as films,
-                (SELECT COUNT(*) FROM production WHERE type = 'serial') as series,
-                (SELECT COUNT(*) FROM platform) as platforms,
-                (SELECT COUNT(*) FROM production_availability) as assignments
-        ")->fetch(PDO::FETCH_ASSOC);
+        $allProductions = Production::findAll();
+        $films = array_filter($allProductions, fn($p) => strtolower($p->getType()) === 'film');
+        $series = array_filter($allProductions, fn($p) => strtolower($p->getType()) === 'serial');
 
-        echo "  Łączna liczba produkcji: {$stats['total_productions']}\n";
-        echo "  Filmy: {$stats['films']}\n";
-        echo "  Seriale: {$stats['series']}\n";
-        echo "  Platformy: {$stats['platforms']}\n";
-        echo "  Przypisań: {$stats['assignments']}\n";
+        echo "  Łączna liczba produkcji: " . count($allProductions) . "\n";
+        echo "  Filmy: " . count($films) . "\n";
+        echo "  Seriale: " . count($series) . "\n";
+        echo "  Platformy: " . count(Platform::findAll()) . "\n";
         echo "\n";
     }
 
     clearDatabase($pdo);
-    insertPlatforms($pdo);
-    insertProductions($pdo);
-    assignPlatforms($pdo);
+    insertPlatforms();
+    insertProductions();
+    assignPlatforms();
     displayData($pdo);
 
-    echo "================================\n";
-    echo "✓ Test zakończony pomyślnie!\n";
-    echo "================================\n\n";
+    echo " Test zakończony pomyślnie!\n";
     echo "Możesz teraz uruchomić aplikację:\n";
-    echo "cd public && php -S localhost:8000\n\n";
+    echo "php -S localhost:56646 -t public\n\n";
 
 } catch (PDOException $e) {
     echo "BŁĄD BAZY DANYCH: " . $e->getMessage() . "\n";

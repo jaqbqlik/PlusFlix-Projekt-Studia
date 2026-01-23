@@ -1,17 +1,25 @@
 nav {
+  height: 120px;
   background-color: @bgPrimary;
-  padding: 20px 0;
+  margin: 0 0 0 0;
+  padding: 25px 0 0px 0;
   border-bottom: 1px solid @border;
 
+
+  @media (max-width: 750px) {
+    height: 80px;
+    padding: 15px 0 0 0;
+  }
+
   .container {
+    max-width: 1400px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .logo {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 45px;
     color: @textPrimary;
     display: flex;
     align-items: center;
@@ -20,6 +28,20 @@ nav {
     &::before {
       content: "🎬";
       font-size: 1.5rem;
+    }
+
+
+    @media (max-width: 750px) {
+      font-size: 32px;
+
+      &::before {
+        font-size: 1.2rem;
+      }
+    }
+
+
+    @media (max-width: 530px) {
+      font-size: 28px;
     }
   }
 
@@ -33,11 +55,13 @@ nav {
     li {
       a {
         color: @textPrimary;
-        font-weight: 500;
         padding: 10px 20px;
         border-radius: @borderRadiusSmall;
         transition: all 0.2s;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
 
         &:hover {
           background-color: @bgSecondary;
@@ -47,6 +71,65 @@ nav {
           color: @bgPrimary;
           background-color: @textPrimary;
         }
+
+        &.logout-btn {
+          &:hover {
+            background-color: @primaryRed;
+            color: white;
+          }
+        }
+
+        .nav-text {
+          display: inline;
+        }
+
+        .nav-icon {
+          display: none;
+          font-size: 20px;
+        }
+
+
+        @media (max-width: 800px) {
+          &.active {
+            display: none;
+          }
+        }
+
+
+        @media (max-width: 530px) {
+          padding: 10px 16px;
+
+          .nav-text {
+            display: none;
+          }
+
+          .nav-icon {
+            display: inline;
+          }
+        }
+      }
+
+      &.admin-status {
+        margin-left: auto;
+
+        .admin-username {
+          color: #fff;
+          background-color: @textPrimary;
+          padding: 10px 20px;
+          border-radius: @borderRadiusSmall;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+
+          @media (max-width: 530px) {
+            padding: 10px 12px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      &.admin-login {
+        margin-left: auto;
       }
     }
   }

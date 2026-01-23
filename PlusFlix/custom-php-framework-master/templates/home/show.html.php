@@ -1,43 +1,117 @@
 <?php
 
+/** @var \App\Model\Production $production */
+/** @var array $platforms */
 /** @var \App\Service\Router $router */
+/** @var bool $isFavorite */
+
 
 $title = 'PlusFlix';
-?>
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stranger Things - <?= htmlspecialchars($title) ?></title>
-    <link rel="stylesheet" href="/assets/dist/style.min.css">
-</head>
-<body>
-<nav>
-    <div class="container">
-        <a href="<?= $router->generatePath('home-index') ?>" class="logo">
-            <?= htmlspecialchars($title) ?>
-        </a>
-        <ul class="nav-menu">
-            <li><a href="<?= $router->generatePath('home-index') ?>">Home</a></li>
-            <li><a href="#">Favorites</a></li>
-        </ul>
-    </div>
-</nav>
+$bodyClass = 'show';
 
-<main>
+ob_start(); ?>
+    <main>
+        <div class="container">
+            <div class="detail-page">
+                <a href="<?= $router->generatePath('home-index') ?>" class="back-link">
+                    Back to Home
+                </a>
 
-</main>
+                <div class="detail-container">
+                    <div>
+                        <?php
+                        $titleText = $production->getTitle() ?? '';
+                        $typeDb = strtolower((string)($production->getType() ?? ''));
+                        $typeLabel = ($typeDb === 'movie' || $typeDb === 'film') ? 'Movie' : 'Series';
 
-<footer>
-    <div class="container">
-        <p>&copy; 2025 <?= htmlspecialchars($title) ?>. Find where to watch your favorite content.</p>
-        <ul class="footer-links">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Privacy</a></li>
-        </ul>
-    </div>
-</footer>
-</body>
-</html>
+                        $poster = $production->getPosterPath();
+                        $poster = $poster ? trim($poster) : '';
+                        $posterSrc = $poster !== '' ? $poster : '/images/ostatnieznas.jpg';
+
+                        $platformUi = [
+                                'Netflix' => ['class' => 'netflix', 'letter' => 'N', 'label' => 'Netflix'],
+                                'Prime Video' => ['class' => 'prime', 'letter' => 'P', 'label' => 'Prime Video'],
+                                'Disney+' => ['class' => 'disney', 'letter' => 'D', 'label' => 'Disney+'],
+                                'HBO Max' => ['class' => 'hbo', 'letter' => 'H', 'label' => 'HBO Max'],
+                                'Apple TV+' => ['class' => 'apple', 'letter' => 'A', 'label' => 'Apple TV+'],
+                        ];
+                        ?>
+
+                        <img src="<?= htmlspecialchars($posterSrc) ?>"
+                             alt="<?= htmlspecialchars($titleText) ?>"
+                             class="detail-poster">
+                    </div>
+
+                    <div class="detail-content">
+                        <div class="detail-header">
+                            <h1><?= htmlspecialchars($titleText) ?></h1>
+                            <?= $id = (int)$production->getId(); ?>
+                            <button
+                                    class="favorite-btn-detail <?= $isFavorite ? 'active' : '' ?>"
+                                    data-production-id="<?= $id ?>"
+                                    type="button">
+                                <?= $isFavorite ? '♥' : '♡' ?>
+                            </button>
+
+
+                            <a href="<?= $router->generatePath('production-edit', ['id' => $production->getId()]) ?>"
+                               class="edit-btn-detail">Edit</a>
+                        </div>
+
+                        <div class="detail-meta">
+                            <span><?= htmlspecialchars($typeLabel) ?></span>
+                            <span><?= htmlspecialchars((string)($production->getReleaseYear() ?? '')) ?></span>
+                            <span>-</span>
+                        </div>
+
+                        <div class="platforms-section">
+                            <h3>Available on</h3>
+                            <div class="platform-badges">
+                                <?php foreach ($platforms as $p): ?>
+                                    <?php
+                                    $name = $p['name'] ?? '';
+                                    $isAvailable = (int)($p['is_available'] ?? 0) === 1;
+
+                                    $ui = $platformUi[$name] ?? [
+                                            'class' => 'netflix',
+                                            'letter' => strtoupper(substr($name, 0, 1)),
+                                            'label' => $name,
+                                    ];
+
+                                    $inactiveClass = $isAvailable ? '' : ' inactive';
+                                    ?>
+
+                                    <?php if ($isAvailable): ?>
+                                        <div class="platform-badge <?= htmlspecialchars($ui['class']) ?><?= $inactiveClass ?>">
+                                            <span><?= htmlspecialchars($ui['letter']) ?></span>
+                                            <?= htmlspecialchars($ui['label']) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="overview-section">
+                            <h3>Overview</h3>
+                            <p><?= nl2br(htmlspecialchars($production->getDescription() ?? '')) ?></p>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <h3>Cast</h3>
+                                <p>-</p>
+                            </div>
+                            <div class="info-item">
+                                <h3>Genres</h3>
+                                <p><?= htmlspecialchars($production->getGenre() ?? '') ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
