@@ -3,6 +3,8 @@
 /** @var \App\Model\Production[] $productions */
 /** @var array $availablePlatformsMap */
 /** @var \App\Service\Router $router */
+/** @var array $favoriteMap */
+
 
 $title = 'PlusFlix';
 $bodyClass = 'index';
@@ -48,7 +50,14 @@ ob_start(); ?>
                     ?>
 
                     <a href="<?= $router->generatePath('home-show', ['id' => $id]) ?>" class="production-card">
-                        <button class="favorite-btn-detail smoll-fav-btn" type="button">♡</button>
+                        <?php $isFav = isset($favoriteMap[$id]); ?>
+
+                        <button class="favorite-btn-detail smoll-fav-btn <?= $isFav ? 'active' : '' ?>"
+                                type="button"
+                                data-fav-url="<?= $router->generatePath('favorites-toggle', ['id' => $id]) ?>">
+                            <?= $isFav ? '♥' : '♡' ?>
+                        </button>
+
 
                         <img src="<?= htmlspecialchars($posterSrc) ?>"
                              alt="<?= htmlspecialchars($titleText) ?>"

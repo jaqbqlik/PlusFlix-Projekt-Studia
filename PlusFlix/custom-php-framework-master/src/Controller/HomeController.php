@@ -16,9 +16,23 @@ class HomeController
         $productions = Production::findAll();
         $availablePlatformsMap = ProductionAvailability::findAvailablePlatformsMap();
 
+        // --- FAVORITES MAP ---
+        $favoriteMap = [];
+
+        $guestId = \App\Service\GuestSession::getGuestId();
+        $session = \App\Model\Session::findByGuestId($guestId);
+
+        if ($session) {
+            $list = \App\Model\UserList::findOrCreateFavorites($session->getId());
+            foreach (\App\Model\ListProduction::getProductionIds($list->getId()) as $pid) {
+                $favoriteMap[(int)$pid] = true;
+            }
+        }
+
         $html = $templating->render('home/index.html.php', [
             'productions' => $productions,
             'availablePlatformsMap' => $availablePlatformsMap,
+            'favoriteMap' => $favoriteMap,
             'router' => $router,
         ]);
 
@@ -34,14 +48,26 @@ class HomeController
 
         $platforms = ProductionAvailability::findAllPlatformsWithAvailabilityByProduction($productionId);
 
+        // --- isFavorite ---
+        $isFavorite = false;
+        $guestId = \App\Service\GuestSession::getGuestId();
+        $session = \App\Model\Session::findByGuestId($guestId);
+
+        if ($session) {
+            $list = \App\Model\UserList::findOrCreateFavorites($session->getId());
+            $isFavorite = \App\Model\ListProduction::exists($list->getId(), $productionId);
+        }
+
         $html = $templating->render('home/show.html.php', [
             'production' => $production,
             'platforms' => $platforms,
+            'isFavorite' => $isFavorite,
             'router' => $router,
         ]);
 
         return $html;
     }
+
 
     public function deleteAction(int $productionId, Router $router): ?string
     {

@@ -3,6 +3,8 @@
 /** @var \App\Model\Production $production */
 /** @var array $platforms */
 /** @var \App\Service\Router $router */
+/** @var bool $isFavorite */
+
 
 $title = 'PlusFlix';
 $bodyClass = 'show';
@@ -43,7 +45,11 @@ ob_start(); ?>
                     <div class="detail-content">
                         <div class="detail-header">
                             <h1><?= htmlspecialchars($titleText) ?></h1>
-                            <button class="favorite-btn-detail active" type="button">♥</button>
+                            <button class="favorite-btn-detail <?= $isFavorite ? 'active' : '' ?>" type="button"
+                                    data-fav-url="<?= $router->generatePath('favorites-toggle', ['id' => (int)$production->getId()]) ?>">
+                                <?= $isFavorite ? '♥' : '♡' ?>
+                            </button>
+
                             <a href="<?= $router->generatePath('production-edit', ['id' => $production->getId()]) ?>"
                                class="edit-btn-detail">Edit</a>
                         </div>

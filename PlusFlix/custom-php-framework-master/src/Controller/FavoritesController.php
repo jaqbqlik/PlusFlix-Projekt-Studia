@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\UserList;
 use App\Model\ListProduction;
+use App\Model\ProductionAvailability;
 use App\Service\GuestSession;
 use App\Service\Router;
 use App\Service\Templating;
@@ -16,11 +17,23 @@ class FavoritesController
         $session = \App\Model\Session::findByGuestId($guestId);
 
         $list = UserList::findOrCreateFavorites($session->getId());
+
         $productions = ListProduction::getProductions($list->getId());
 
-        return $templating->render('favorites/favorites.html.php', [
+        // platformy (tak jak na home/index)
+        $availablePlatformsMap = ProductionAvailability::findAvailablePlatformsMap();
+
+        // mapa ulubionych do podświetlenia serduszka
+        $favoriteMap = [];
+        foreach (ListProduction::getProductionIds($list->getId()) as $pid) {
+            $favoriteMap[(int)$pid] = true;
+        }
+
+        return $templating->render('favorites/index.html.php', [
             'productions' => $productions,
-            'router' => $router
+            'availablePlatformsMap' => $availablePlatformsMap,
+            'favoriteMap' => $favoriteMap,
+            'router' => $router,
         ]);
     }
 
@@ -31,8 +44,8 @@ class FavoritesController
 
         $list = UserList::findOrCreateFavorites($session->getId());
 
-        ListProduction::add($list->getId(), $productionId);
+        ListProduction::toggle($list->getId(), $productionId);
 
-        $router->redirect($_SERVER['HTTP_REFERER'] ?? '/');
+        $router->redirect($_SERVER['HTTP_REFERER'] ?? $router->generatePath('home-index'));
     }
 }
